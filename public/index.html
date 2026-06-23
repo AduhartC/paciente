@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pacientes</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        label { display: block; margin: 10px 0 5px; color: #666; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+        button:hover { background-color: #218838; }
+        #mensaje { margin-top: 15px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Registro de Paciente</h2>
+    <form id="formPaciente">
+        <label>RUT:</label>
+        <input type="text" id="rut" placeholder="12345678-9" required>
+
+        <label>Nombre Completo:</label>
+        <input type="text" id="nombre" placeholder="Juan Pérez" required>
+
+        <label>Edad:</label>
+        <input type="number" id="edad" placeholder="45" required>
+
+        <label>Teléfono:</label>
+        <input type="text" id="telefono" placeholder="+56912345678" required>
+
+        <label>Correo Electrónico:</label>
+        <input type="email" id="correo" placeholder="juan@email.com" required>
+
+        <label>Fecha Próximo Examen:</label>
+        <input type="date" id="proximoExamen" required>
+
+        <button type="submit">Registrar Paciente</button>
+    </form>
+    <div id="mensaje"></div>
+</div>
+
+<script>
+    document.getElementById('formPaciente').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const mensajeDiv = document.getElementById('mensaje');
+        
+        // Capturamos los datos del formulario web
+        const datos = {
+            rut: document.getElementById('rut').value,
+            nombre: document.getElementById('nombre').value,
+            edad: parseInt(document.getElementById('edad').value),
+            telefono: document.getElementById('telefono').value,
+            correo: document.getElementById('correo').value,
+            proximoExamen: document.getElementById('proximoExamen').value
+        };
+
+        try {
+            // Enviamos los datos reales a tu endpoint POST mediante fetch
+            const respuesta = await fetch('/api/pacientes/registro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await respuesta.json();
+
+            if (respuesta.ok) {
+                mensajeDiv.style.color = '#28a745';
+                mensajeDiv.innerHTML = "✅ " + resultado.mensaje;
+                document.getElementById('formPaciente').reset();
+            } else {
+                mensajeDiv.style.color = '#dc3545';
+                mensajeDiv.innerHTML = "❌ " + (resultado.error || "Error al registrar");
+            }
+        } catch (error) {
+            mensajeDiv.style.color = '#dc3545';
+            mensajeDiv.innerHTML = "❌ Error de conexión con el servidor";
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "pacientes",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.mjs",
+  "scripts": {
+    "start": "node --env-file=.env app.mjs"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.4.1"
+  }
+}
