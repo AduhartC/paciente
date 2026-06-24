@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import rutasPacientes from './routes/pacientes.mjs';
+import dotenv from 'dotenv';
+dotenv.config(); // O algo similar
 
 // Inicializamos Express
 const app = express();
