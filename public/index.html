@@ -9,11 +9,16 @@
         /* Barra de Menú RedSalud */
         .navbar { background-color: #004d51; display: flex; justify-content: center; padding: 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); sticky: top; }
         .navbar a { color: #ffffff; text-decoration: none; padding: 10px 20px; margin: 0 5px; font-weight: bold; font-size: 15px; border-radius: 4px; transition: background 0.2s; cursor: pointer; }
-        .navbar a:hover, .navbar a.active { background-color: #00828a; }
+        .navbar a:hover, .navbar a.tab-activa { 
+    background-color: #00828a !important; 
+}
         
         /* Contenedores */
-        .container { max-width: 750px; margin: 40px auto; background: #ffffff; padding: 35px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #00828a; display: none; }
-        .container.active { display: block; }
+        .container { max-width: 750px; margin: 40px auto; background: #ffffff; padding: 35px; border-radius: 8px; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #00828a; display: none; }
+        .container.tab-activa { 
+    display: block !important; 
+}
         h2 { color: #004d51; margin-top: 0; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
         
         /* Formularios Estilizados */
@@ -55,7 +60,7 @@
 <!-- 🚨 REEMPLAZA TU MENÚ ACTUAL POR ESTE QUE SÍ TIENE LOS ID EN LAS PESTAÑAS 🚨 -->
 
 <div class="navbar">
-    <a onclick="switchTab('tab-ingreso')" id="btn-tab-ingreso" class="active">Ingreso</a>
+    <a onclick="switchTab('tab-ingreso')" id="btn-tab-ingreso" class="tab-activa">Ingreso</a>
     <a onclick="switchTab('tab-editar')" id="btn-tab-editar">Editar</a>
     <a onclick="switchTab('tab-consulta')" id="btn-tab-consulta">Consulta</a>
     <a onclick="switchTab('tab-eliminar')" id="btn-tab-eliminar">Eliminar</a>
@@ -181,47 +186,29 @@
 
       <script>
     // 🔀 Función global para alternar pestañas
-    function switchTab(tabId) {
-        try {
-            // 1. Oculta todos los contenedores de secciones
-            const contenedores = document.querySelectorAll('.container');
-            if (contenedores) {
-                contenedores.forEach(c => c.classList.remove('active'));
-            }
+   function switchTab(tabId) {
+    try {
+        // 1. Oculta las secciones quitando la nueva clase
+        document.querySelectorAll('.container').forEach(c => c.classList.remove('tab-activa'));
 
-            // 2. Desactiva el estado visual de todos los botones del menú
-            const botonesNav = document.querySelectorAll('.navbar a');
-            if (botonesNav) {
-                botonesNav.forEach(a => a.classList.remove('active'));
-            }
-            
-            // 3. Muestra el contenedor de la sección seleccionada
-            const contenedorDestino = document.getElementById(tabId);
-            if (contenedorDestino) {
-                contenedorDestino.classList.add('active');
-            } else {
-                console.error("No se encontró el contenedor con ID:", tabId);
-            }
+        // 2. Apaga el estado visual de los botones del menú
+        document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('tab-activa'));
+        
+        // 3. Muestra la sección seleccionada
+        const contenedorDestino = document.getElementById(tabId);
+        if (contenedorDestino) contenedorDestino.classList.add('tab-activa');
 
-            // 4. Activa visualmente el botón del menú seleccionado
-            const botonDestino = document.getElementById('btn-' + tabId);
-            if (botonDestino) {
-                botonDestino.classList.add('active');
-            } else {
-                console.error("No se encontró el botón con ID:", 'btn-' + tabId);
-            }
-            
-            // Limpieza de mensajes antiguos al cambiar de pantalla
-            document.querySelectorAll('.msg-box').forEach(m => m.innerHTML = "");
-            
-            // Si el usuario hace clic en el control de fechas, recarga el listado cronológico
-            if (tabId === 'tab-fecha') {
-                cargarListadoCronologicoExamenes();
-            }
-        } catch (error) {
-            console.error("Error crítico ejecutando el cambio de pestañas:", error.message);
-        }
+        // 4. Enciende el botón del menú seleccionado
+        const botonDestino = document.getElementById('btn-' + tabId);
+        if (botonDestino) botonDestino.classList.add('tab-activa');
+        
+        document.querySelectorAll('.msg-box').forEach(m => m.innerHTML = "");
+        if(tabId === 'tab-fecha') { cargarListadoCronologicoExamenes(); }
+    } catch (error) {
+        console.error("Error en cambio de pestañas:", error.message);
     }
+}
+
 
     // 🔙 Función para regresar a la pantalla de Ingreso
     function irAlInicio() {
