@@ -3,7 +3,7 @@ import Paciente from '../models/Paciente.mjs';
 
 const router = express.Router();
 
-// Helper para buscar por RUT o por Nombre (búsqueda parcial insensible a mayúsculas)
+// Helper de búsqueda flexible (RUT exacto o Nombre parcial)
 const buscarPorRutONombre = async (parametro) => {
   return await Paciente.findOne({
     $or: [
@@ -24,18 +24,18 @@ router.post('/registro', async (req, res) => {
   }
 });
 
-// 🔍 BUSCAR: Obtener datos de un paciente para Editar o Consulta
+// 🔍 BUSCAR: Este endpoint es el que hace reaccionar al botón de Editar y Consulta
 router.get('/buscar/:criterio', async (req, res) => {
   try {
     const paciente = await buscarPorRutONombre(req.params.criterio);
-    if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
+    if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado en el sistema' });
     res.json(paciente);
   } catch (error) {
-    res.status(500).json({ error: 'Error en la búsqueda' });
+    res.status(500).json({ error: 'Error interno en la búsqueda del servidor' });
   }
 });
 
-// 🟡 EDITAR: Actualizar registro
+// 🟡 EDITAR: Actualizar registro usando el ID de MongoDB
 router.put('/:id', async (req, res) => {
   try {
     const paciente = await Paciente.findById(req.params.id);
@@ -43,7 +43,7 @@ router.put('/:id', async (req, res) => {
     
     Object.assign(paciente, req.body);
     await paciente.save();
-    res.json({ mensaje: 'Ficha actualizada con éxito', paciente });
+    res.json({ mensaje: 'Ficha médica actualizada con éxito', paciente });
   } catch (error) {
     res.status(400).json({ error: 'Error al actualizar el registro' });
   }
@@ -62,12 +62,12 @@ router.delete('/:criterio', async (req, res) => {
   }
 });
 
-// 📅 FECHA EXAMEN: Listado ordenado de más antiguo a más nuevo
+// 📅 FECHA EXAMEN: Listado cronológico
 router.get('/listado-examenes', async (req, res) => {
   try {
     const pacientes = await Paciente.find()
       .select('nombre telefono correo fechaExamen requiereExamen')
-      .sort({ fechaExamen: 1 }) // 1 = Más antiguos primero
+      .sort({ fechaExamen: 1 })
       .lean();
     res.json(pacientes);
   } catch (error) {
