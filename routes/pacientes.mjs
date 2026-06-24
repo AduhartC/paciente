@@ -3,77 +3,76 @@ import Paciente from '../models/Paciente.mjs';
 
 const router = express.Router();
 
-// 🟢 C: CREAR un paciente (Registro)
+// Helper para buscar por RUT o por Nombre (búsqueda parcial insensible a mayúsculas)
+const buscarPorRutONombre = async (parametro) => {
+  return await Paciente.findOne({
+    $or: [
+      { rut: parametro.trim() },
+      { nombre: { $regex: parametro.trim(), $options: 'i' } }
+    ]
+  });
+};
+
+// 🟢 INGRESO: Registrar Paciente
 router.post('/registro', async (req, res) => {
   try {
     const nuevoPaciente = new Paciente(req.body);
     await nuevoPaciente.save();
     res.status(201).json({ mensaje: 'Paciente registrado con éxito', paciente: nuevoPaciente });
   } catch (error) {
-    res.status(400).json({ error: 'Error al registrar', detalle: error.message });
+    res.status(400).json({ error: error.code === 11000 ? 'El RUT ya está registrado' : error.message });
   }
 });
 
-// 🔵 R: LEER todos los pacientes (Separa las Alertas)
-router.get('/', async (req, res) => {
+// 🔍 BUSCAR: Obtener datos de un paciente para Editar o Consulta
+router.get('/buscar/:criterio', async (req, res) => {
   try {
-    const pacientes = await Paciente.find().lean();
-    const alertas = pacientes.filter(p => p.requiereExamen);
-
-    res.json({
-      total: pacientes.length,
-      alertasActivas: alertas.length,
-      pacientes,
-      listaAlertas: alertas.map(p => `⚠️ Paciente ${p.nombre} requiere examen urgentemente.`)
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener pacientes' });
-  }
-});
-
-// 🟡 U: ACTUALIZAR datos de un paciente
-router.put('/:rut', async (req, res) => {
-  try {
-    const paciente = await Paciente.findOne({ rut: req.params.rut });
+    const paciente = await buscarPorRutONombre(req.params.criterio);
     if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
-
-    Object.assign(paciente, req.body);
-    await paciente.save(); 
-
-    res.json({ mensaje: 'Paciente actualizado con éxito', paciente });
+    res.json(paciente);
   } catch (error) {
-    res.status(400).json({ error: 'Error al actualizar' });
+    res.status(500).json({ error: 'Error en la búsqueda' });
   }
 });
 
-// 🔴 D: ELIMINAR un paciente
-router.delete('/:rut', async (req, res) => {
+// 🟡 EDITAR: Actualizar registro
+router.put('/:id', async (req, res) => {
   try {
-    const resultado = await Paciente.findOneAndDelete({ rut: req.params.rut });
-    if (!resultado) return res.status(404).json({ error: 'Paciente no encontrado' });
-    res.json({ mensaje: 'Paciente eliminado del sistema' });
+    const paciente = await Paciente.findById(req.params.id);
+    if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
+    
+    Object.assign(paciente, req.body);
+    await paciente.save();
+    res.json({ mensaje: 'Ficha actualizada con éxito', paciente });
   } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar' });
+    res.status(400).json({ error: 'Error al actualizar el registro' });
+  }
+});
+
+// 🔴 ELIMINAR: Borrar registro
+router.delete('/:criterio', async (req, res) => {
+  try {
+    const paciente = await buscarPorRutONombre(req.params.criterio);
+    if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
+    
+    await Paciente.findByIdAndDelete(paciente._id);
+    res.json({ mensaje: `Paciente ${paciente.nombre} eliminado correctamente.` });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar el registro' });
+  }
+});
+
+// 📅 FECHA EXAMEN: Listado ordenado de más antiguo a más nuevo
+router.get('/listado-examenes', async (req, res) => {
+  try {
+    const pacientes = await Paciente.find()
+      .select('nombre telefono correo fechaExamen requiereExamen')
+      .sort({ fechaExamen: 1 }) // 1 = Más antiguos primero
+      .lean();
+    res.json(pacientes);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al cargar listado de exámenes' });
   }
 });
 
 export default router;
-
-// 🧪 RUTA DE PRUEBA RÁPIDA (Escribe esto justo antes de export default router)
-router.get('/crear-ficticio', async (req, res) => {
-  try {
-    const pacienteFicticio = new Paciente({
-      rut: "12345678-9",
-      nombre: "Carlos González",
-      edad: 38,
-      telefono: "+56987654321",
-      correo: "carlos@email.com",
-      proximoExamen: new Date("2026-05-10") // Fecha pasada (vencida) para forzar la alerta
-    });
-
-    await pacienteFicticio.save();
-    res.send(`<h1>✅ Paciente Ficticio Creado</h1><p>Revisa la terminal de tu servidor o ve a http://localhost:3000/api/pacientes para ver la lista y la alerta activa.</p>`);
-  } catch (error) {
-    res.status(400).send(`<h1>❌ Error al crear</h1><p>${error.message}</p>`);
-  }
-});

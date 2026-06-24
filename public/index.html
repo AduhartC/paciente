@@ -3,167 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Pacientes</title>
-      <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f7f9fa; /* Gris claro de fondo RedSalud */
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            height: auto; 
-            padding: 40px 20px;
-            margin: 0; 
-        }
-        .form-container, .lista-container { 
-            background: #ffffff; 
-            padding: 30px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            width: 100%; 
-            max-width: 500px; 
-            box-sizing: border-box;
-            border-top: 5px solid #00828a; /* Línea superior verde azulado */
-        }
-        .lista-container {
-            max-width: 700px;
-            margin-top: 30px;
-            border-top: 5px solid #00b2b2; /* Línea superior celeste */
-        }
-        h2, h3 { 
-            text-align: center; 
-            color: #004d51; /* Texto oscuro institucional */
-            margin-top: 0;
-            margin-bottom: 20px; 
-        }
-        label { 
-            display: block; 
-            margin: 15px 0 5px; 
-            color: #4a5568; 
-            font-weight: bold; 
-            font-size: 14px;
-        }
-        input { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #cbd5e0; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-            font-size: 14px;
-        }
-        input:focus {
-            outline: none;
-            border-color: #00b2b2; /* Borde celeste al hacer clic */
-            box-shadow: 0 0 0 3px rgba(0, 178, 178, 0.1);
-        }
-        button { 
-            width: 100%; 
-            padding: 14px; 
-            background-color: #00828a; /* Verde azulado principal */
-            color: white; 
-            border: none; 
-            border-radius: 25px; /* Botón redondeado institucional */
-            font-size: 16px; 
-            font-weight: bold;
-            cursor: pointer; 
-            margin-top: 25px; 
-            transition: background-color 0.2s;
-        }
-        button:hover { 
-            background-color: #00666c; /* Tono más oscuro al pasar el mouse */
-        }
-        #mensaje { 
-            margin-top: 15px; 
-            text-align: center; 
-            font-weight: bold; 
-        }
-        /* Estilos de la tabla de registros */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th {
-            background-color: #f7f9fa;
-            color: #004d51;
-            padding: 12px;
-            text-align: left;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #edf2f7;
-            color: #2d3748;
-        }
+    <title>Clínica RedSalud - Panel Médico</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f7f9fa; margin: 0; padding-bottom: 50px; }
+        /* Barra de Menú RedSalud */
+        .navbar { background-color: #004d51; display: flex; justify-content: center; padding: 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); sticky: top; }
+        .navbar a { color: #ffffff; text-decoration: none; padding: 10px 20px; margin: 0 5px; font-weight: bold; font-size: 15px; border-radius: 4px; transition: background 0.2s; cursor: pointer; }
+        .navbar a:hover, .navbar a.active { background-color: #00828a; }
+        
+        /* Contenedores */
+        .container { max-width: 750px; margin: 40px auto; background: #ffffff; padding: 35px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #00828a; display: none; }
+        .container.active { display: block; }
+        h2 { color: #004d51; margin-top: 0; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        
+        /* Formularios Estilizados */
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        label { display: block; margin-bottom: 5px; color: #4a5568; font-weight: bold; font-size: 13px; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        input:focus, textarea:focus { outline: none; border-color: #00b2b2; box-shadow: 0 0 0 3px rgba(0, 178, 178, 0.1); }
+        textarea { resize: vertical; height: 80px; }
+        
+        /* Botones RedSalud */
+        .btn-group { display: flex; gap: 15px; margin-top: 25px; }
+        button { padding: 12px 25px; border: none; font-size: 15px; font-weight: bold; cursor: pointer; border-radius: 25px; transition: background 0.2s; }
+        .btn-primary { background-color: #00828a; color: white; }
+        .btn-primary:hover { background-color: #00666c; }
+        .btn-secondary { background-color: #e2e8f0; color: #4a5568; }
+        .btn-secondary:hover { background-color: #cbd5e0; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-danger:hover { background-color: #bd2130; }
+        
+        /* Buscadores */
+        .search-box { display: flex; gap: 10px; margin-bottom: 25px; background: #edf2f7; padding: 15px; border-radius: 6px; }
+        
+        /* Alertas y Mensajes */
+        .alert-sms { background-color: #fff5f5; color: #c53030; border-left: 4px solid #fc8181; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        .msg-box { margin-top: 15px; font-weight: bold; text-align: center; }
+        
+        /* Tablas */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background-color: #f7f9fa; color: #004d51; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #edf2f7; font-size: 14px; }
+        .row-expired { background-color: #fff5f5; }
+        .badge-expired { background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
     </style>
-
 </head>
 <body>
 
-<div class="form-container">
-    <h2>Registro de Paciente</h2>
-    <form id="formPaciente">
-        <label>RUT:</label>
-        <input type="text" id="rut" placeholder="12345678-9" required>
-
-        <label>Nombre Completo:</label>
-        <input type="text" id="nombre" placeholder="Juan Pérez" required>
-
-        <label>Edad:</label>
-        <input type="number" id="edad" placeholder="45" required>
-
-        <label>Teléfono:</label>
-        <input type="text" id="telefono" placeholder="+56912345678" required>
-
-        <label>Correo Electrónico:</label>
-        <input type="email" id="correo" placeholder="juan@email.com" required>
-
-        <label>Fecha Próximo Examen:</label>
-        <input type="date" id="proximoExamen" required>
-
-        <button type="submit">Registrar Paciente</button>
-    </form>
-    <div id="mensaje"></div>
+<!-- Menú de Navegación Superior -->
+<div class="navbar">
+    <a onclick="switchTab('tab-ingreso')" id="btn-tab-ingreso" class="active">Ingreso</a>
+    <a onclick="switchTab('tab-editar')" id="btn-tab-editar">Editar</a>
+    <a onclick="switchTab('tab-consulta')" id="btn-tab-consulta">Consulta</a>
+    <a onclick="switchTab('tab-eliminar')" id="btn-tab-eliminar">Eliminar</a>
+    <a onclick="switchTab('tab-fecha')" id="btn-tab-fecha">Fecha Examen</a>
 </div>
 
-<script>
-    document.getElementById('formPaciente').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const mensajeDiv = document.getElementById('mensaje');
-        
-        // Capturamos los datos del formulario web
-        const datos = {
-            rut: document.getElementById('rut').value,
-            nombre: document.getElementById('nombre').value,
-            edad: parseInt(document.getElementById('edad').value),
-            telefono: document.getElementById('telefono').value,
-            correo: document.getElementById('correo').value,
-            proximoExamen: document.getElementById('proximoExamen').value
-        };
+<!-- SECCIÓN 1: INGRESO -->
+<div id="tab-ingreso" class="container active">
+    <h2>📋 Formulario de Ingreso de Pacientes</h2>
+    <form id="formIngreso" class="grid-form">
+        <div>
+            <label>RUT Paciente:</label>
+            <input type="text" id="ing-rut" placeholder="12345678-9" required>
+        </div>
+        <div>
+            <label>Nombre Completo:</label>
+            <input type="text" id="ing-nombre" placeholder="Juan Pérez" required>
+        </div>
+        <div>
+            <label>Teléfono:</label>
+            <input type="text" id="ing-telefono" placeholder="+56912345678" required>
+        </div>
+        <div>
+            <label>Correo Electrónico:</label>
+            <input type="email" id="ing-correo" placeholder="juan@email.com" required>
+        </div>
+        <div>
+            <label>Dirección Residencia:</label>
+            <input type="text" id="ing-direccion" placeholder="Av. Balmaceda 1420" required>
+        </div>
+        <div>
+            <label>Ciudad:</label>
+            <input type="text" id="ing-ciudad" placeholder="La Serena" required>
+        </div>
+        <div>
+            <label>Diagnóstico Primario (1):</label>
+            <input type="text" id="ing-diag1" placeholder="Hipertensión Arterial">
+        </div>
+        <div>
+            <label>Diagnóstico Secundario (2):</label>
+            <input type="text" id="ing-diag2" placeholder="Diabetes Mellitus Tipo 2">
+        </div>
+        <div class="full-width">
+            <label>Diagnóstico Adicional (3):</label>
+            <input type="text" id="ing-diag3" placeholder="Dislipidemia">
+        </div>
+        <div class="full-width">
+            <label>Fecha Próximo Examen Crítico:</label>
+            <input type="date" id="ing-fecha" required>
+        </div>
+        <div class="full-width">
+            <label>Observaciones y Glosa Médica:</label>
+            <textarea id="ing-obs" placeholder="Escriba aquí antecedentes clínicos relevantes o detalles adicionales del paciente..."></textarea>
+        </div>
+        <div class="full-width">
+            <button type="submit" class="btn-primary">Registrar Ficha Médica</button>
+        </div>
+    </form>
+    <div id="ing-msg" class="msg-box"></div>
+</div>
 
-        try {
-            // Enviamos los datos reales a tu endpoint POST mediante fetch
-            const respuesta = await fetch('/api/pacientes/registro', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datos)
-            });
+<!-- SECCIÓN 2: EDITAR -->
+<div id="tab-editar" class="container">
+    <h2>Modify Editar Ficha de Paciente</h2>
+    <div class="search-box">
+        <input type="text" id="edit-search" placeholder="Escriba el RUT o nombre a buscar...">
+        <button onclick="buscarParaEditar()" class="btn-primary" style="margin:0; padding:10px 20px;">Buscar</button>
+    </div>
+    <div id="edit-form-block" style="display:none;">
+        <form id="formEditar" class="grid-form">
+            <input type="hidden" id="edit-id">
+            <div><label>RUT:</label><input type="text" id="edit-rut" readonly style="background:#edf2f7;"></div>
+            <div><label>Nombre:</label><input type="text" id="edit-nombre" required></div>
+            <div><label>Teléfono:</label><input type="text" id="edit-telefono" required></div>
+            <div><label>Correo:</label><input type="text" id="edit-correo" required></div>
+            <div><label>Dirección:</label><input type="text" id="edit-direccion" required></div>
+            <div><label>Ciudad:</label><input type="text" id="edit-ciudad" required></div>
+            <div><label>Diagnóstico 1:</label><input type="text" id="edit-diag1"></div>
+            <div><label>Diagnóstico 2:</label><input type="text" id="edit-diag2"></div>
+            <div class="full-width"><label>Diagnóstico 3:</label><input type="text" id="edit-diag3"></div>
+            <div class="full-width"><label>Fecha Examen:</label><input type="date" id="edit-fecha" required></div>
+            <div class="full-width"><label>Observaciones:</label><textarea id="edit-obs"></textarea></div>
+            <div class="full-width btn-group">
+                <button type="submit" class="btn-primary">Actualizar Ficha</button>
+                <button type="button" onclick="irAlInicio()" class="btn-secondary">Regresar al Inicio</button>
+            </div>
+        </form>
+    </div>
+    <div id="edit-msg" class="msg-box"></div>
+</div>
 
-            const resultado = await respuesta.json();
+<!-- SECCIÓN 3: CONSULTA -->
+<div id="tab-consulta" class="container">
+    <h2>🔍 Módulo de Consulta Clínica</h2>
+    <div class="search-box">
+        <input type="text" id="query-search" placeholder="Ingrese el RUT o nombre completo del paciente...">
+        <button onclick="ejecutarConsulta()" class="btn-primary" style="margin:0; padding:10px 20px;">Consultar</button>
+    </div>
+    <div id="query-result" style="display:none; background:#f7f9fa; padding:20px; border-radius:6px; border:1px solid #e2e8f0;">
+        <div class="grid-form" style="font-size:15px;">
+            <p><strong>RUT:</strong> <span id="q-rut"></span></p>
+            <p><strong>Nombre:</strong> <span id="q-nombre"></span></p>
+            <p><strong>Teléfono:</strong> <span id="q-telefono"></span></p>
+            <p><strong>Correo:</strong> <span id="q-correo"></span></p>
+            <p><strong>Dirección:</strong> <span id="q-direccion"></span></p>
+            <p><strong>Ciudad:</strong> <span id="q-ciudad"></span></p>
+            <p><strong>Diagnóstico 1:</strong> <span id="q-diag1"></span></p>
+            <p><strong>Diagnóstico 2:</strong> <span id="q-diag2"></span></p>
+            <p><strong>Diagnóstico 3:</strong> <span id="q-diag3"></span></p>
+            <p><strong>Fecha Próximo Examen:</strong> <span id="q-fecha" style="font-weight:bold;"></span></p>
+            <p class="full-width"><strong>Observaciones Clínicas:</strong><br><span id="q-obs" style="display:block; background:white; padding:10px; border-radius:4px; margin-top:5px; border:1px solid #edf2f7;"></span></p>
+        </div>
+    </div>
+    <div id="query-msg" class="msg-box"></div>
+</div>
 
-            if (respuesta.ok) {
-                mensajeDiv.style.color = '#28a745';
-                mensajeDiv.innerHTML = "✅ " + resultado.mensaje;
-                document.getElementById('formPaciente').reset();
-            } else {
-                mensajeDiv.style.color = '#dc3545';
-                mensajeDiv.innerHTML = "❌ " + (resultado.error || "Error al registrar");
-            }
-        } catch (error) {
-            mensajeDiv.style.color = '#dc3545';
-            mensajeDiv.innerHTML = "❌ Error de conexión con el servidor";
-        }
-    });
-</script>
-</body>
-</html>
+<!-- SECCIÓN 4: ELIMINAR -->
+<div id="tab-eliminar" class="container">
+    <h2>❌ Dar de Baja Registro Médico</h2>
+    <div class="search-box">
