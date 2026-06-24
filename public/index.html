@@ -174,3 +174,216 @@
 <div id="tab-eliminar" class="container">
     <h2>❌ Dar de Baja Registro Médico</h2>
     <div class="search-box">
+
+        <script>
+    // 🔀 Gestión del cambio de pestañas del Menú
+    function switchTab(tabId) {
+        document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('btn-' + tabId).classList.add('active');
+        
+        // Limpieza automática de cuadros de mensajes al cambiar de pestaña
+        document.querySelectorAll('.msg-box').forEach(m => m.innerHTML = "");
+        
+        if(tabId === 'tab-fecha') {
+            cargarListadoCronologicoExamenes();
+        }
+    }
+
+    // 🔙 Función para el botón "Regresar al Inicio"
+    function irAlInicio() {
+        // Limpia los campos del formulario de edición antes de volver
+        document.getElementById('formEditar').reset();
+        document.getElementById('edit-form-block').style.display = "none";
+        document.getElementById('edit-search').value = "";
+        document.getElementById('edit-msg').innerHTML = "";
+        switchTab('tab-ingreso');
+    }
+
+    // 🟢 ACCIÓN: Procesar Registro (Ingreso)
+    document.getElementById('formIngreso').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById('ing-msg');
+        const payload = {
+            rut: document.getElementById('ing-rut').value,
+            nombre: document.getElementById('ing-nombre').value,
+            telefono: document.getElementById('ing-telefono').value,
+            correo: document.getElementById('ing-correo').value,
+            direccion: document.getElementById('ing-direccion').value,
+            ciudad: document.getElementById('ing-ciudad').value,
+            diagnostico1: document.getElementById('ing-diag1').value,
+            diagnostico2: document.getElementById('ing-diag2').value,
+            diagnostico3: document.getElementById('ing-diag3').value,
+            fechaExamen: document.getElementById('ing-fecha').value,
+            observaciones: document.getElementById('ing-obs').value
+        };
+
+        try {
+            const res = await fetch('/api/pacientes/registro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                msg.style.color = '#28a745';
+                msg.innerHTML = `✅ ${data.mensaje}`;
+                document.getElementById('formIngreso').reset();
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch (err) {
+            msg.innerHTML = "❌ Error de comunicación con la API";
+        }
+    });
+
+    // 🟡 ACCIÓN: Buscar para rellenar formulario de Edición (¡ACTIVA TU BOTÓN EDITAR!)
+    async function buscarParaEditar() {
+        const criterio = document.getElementById('edit-search').value;
+        const msg = document.getElementById('edit-msg');
+        const block = document.getElementById('edit-form-block');
+        if(!criterio) return;
+        
+        block.style.display = "none";
+        msg.innerHTML = "";
+
+        try {
+            const res = await fetch(`/api/pacientes/buscar/${criterio}`);
+            const data = await res.json();
+            if(res.ok) {
+                // Inyectamos los datos en las casillas correspondientes
+                document.getElementById('edit-id').value = data._id;
+                document.getElementById('edit-rut').value = data.rut;
+                document.getElementById('edit-nombre').value = data.nombre;
+                document.getElementById('edit-telefono').value = data.telefono;
+                document.getElementById('edit-correo').value = data.correo;
+                document.getElementById('edit-direccion').value = data.direccion;
+                document.getElementById('edit-ciudad').value = data.ciudad;
+                document.getElementById('edit-diag1').value = data.diagnostico1 || "";
+                document.getElementById('edit-diag2').value = data.diagnostico2 || "";
+                document.getElementById('edit-diag3').value = data.diagnostico3 || "";
+                
+                // Formateamos la fecha para que el input tipo date de HTML la reconozca (AAAA-MM-DD)
+                if(data.fechaExamen) {
+                    document.getElementById('edit-fecha').value = data.fechaExamen.split('T')[0];
+                }
+                
+                document.getElementById('edit-obs').value = data.observaciones || "";
+                
+                // Muestra el bloque oculto del formulario en pantalla
+                block.style.display = "block";
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch(err) { 
+            msg.style.color = '#dc3545';
+            msg.innerHTML = "❌ Error al conectar con el servidor al buscar la ficha."; 
+        }
+    }
+
+    // 🟡 ACCIÓN: Enviar actualización de Edición definitiva a la API
+    document.getElementById('formEditar').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-id').value;
+        const msg = document.getElementById('edit-msg');
+        const payload = {
+            nombre: document.getElementById('edit-nombre').value,
+            telefono: document.getElementById('edit-telefono').value,
+            correo: document.getElementById('edit-correo').value,
+            direccion: document.getElementById('edit-direccion').value,
+            ciudad: document.getElementById('edit-ciudad').value,
+            diagnostico1: document.getElementById('edit-diag1').value,
+            diagnostico2: document.getElementById('edit-diag2').value,
+            diagnostico3: document.getElementById('edit-diag3').value,
+            fechaExamen: document.getElementById('edit-fecha').value,
+            observaciones: document.getElementById('edit-obs').value
+        };
+
+        try {
+            const res = await fetch(`/api/pacientes/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if(res.ok) {
+                msg.style.color = '#28a745';
+                msg.innerHTML = `✅ ${data.mensaje}`;
+                
+                // Oculta y limpia el formulario tras 2 segundos de éxito
+                setTimeout(() => {
+                    document.getElementById('edit-form-block').style.display = "none";
+                    document.getElementById('edit-search').value = "";
+                    msg.innerHTML = "";
+                }, 2000);
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch(err) { 
+            msg.style.color = '#dc3545';
+            msg.innerHTML = "❌ Error al procesar actualización en la nube."; 
+        }
+    });
+
+    // 🔍 ACCIÓN: Módulo de Consulta Clínica
+    async function ejecutarConsulta() {
+        const criterio = document.getElementById('query-search').value;
+        const msg = document.getElementById('query-msg');
+        const resultDiv = document.getElementById('query-result');
+        if(!criterio) return;
+
+        resultDiv.style.display = "none";
+        msg.innerHTML = "";
+
+        try {
+            const res = await fetch(`/api/pacientes/buscar/${criterio}`);
+            const data = await res.json();
+            if(res.ok) {
+                document.getElementById('q-rut').innerText = data.rut;
+                document.getElementById('q-nombre').innerText = data.nombre;
+                document.getElementById('q-telefono').innerText = data.telefono;
+                document.getElementById('q-correo').innerText = data.correo;
+                document.getElementById('q-direccion').innerText = data.direccion;
+                document.getElementById('q-ciudad').innerText = data.ciudad;
+                document.getElementById('q-diag1').innerText = data.diagnostico1 || "Ninguno";
+                document.getElementById('q-diag2').innerText = data.diagnostico2 || "Ninguno";
+                document.getElementById('q-diag3').innerText = data.diagnostico3 || "Ninguno";
+                document.getElementById('q-fecha').innerText = new Date(data.fechaExamen).toLocaleDateString('es-CL');
+                document.getElementById('q-obs').innerText = data.observaciones || "Sin observaciones guardadas.";
+                resultDiv.style.display = "block";
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch(err) { 
+            msg.style.color = '#dc3545';
+            msg.innerHTML = "❌ Error de conexión al consultar."; 
+        }
+    }
+
+    // 🔴 ACCIÓN: Eliminar Ficha de Paciente
+    async function confirmarBaja() {
+        const criterio = document.getElementById('del-search').value;
+        const msg = document.getElementById('del-msg');
+        if(!criterio) return;
+        msg.innerHTML = "";
+
+        if(!confirm(`¿Está completamente seguro de que desea eliminar permanentemente este registro médico?`)) return;
+
+        try {
+            const res = await fetch(`/api/pacientes/${criterio}`, { method: 'DELETE' });
+            const data = await res.json();
+            if(res.ok) {
+                msg.style.color = '#28a745';
+                msg.innerHTML = `✅ ${data.mensaje}`;
+                document.getElementById('del-search').value = "";
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch(err) { 
