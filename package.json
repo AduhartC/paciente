@@ -4,7 +4,7 @@
   "type": "module",
   "main": "app.mjs",
   "scripts": {
-    "start": "node --env-file=.env app.mjs"
+    "start": "node app.mjs"
   },
   "dependencies": {
     "express": "^4.19.2",
