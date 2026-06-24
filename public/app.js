@@ -34,11 +34,11 @@ document.getElementById('formIngreso').addEventListener('submit', async (e) => {
         otros: document.getElementById('ing-otros').value.trim()
     };
 
-    try {
-        // CORRECCIÓN: Apuntar a la URL exacta de tu servicio médico en Render
+       try {
+        // DETECCIÓN DINÁMICA: Detecta si estás probando en tu PC o en la nube de Render
         const urlServer = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'http://localhost:3000/api/pacientes' 
-            : 'https://onrender.com';
+            : 'https://onrender.com'; // URL Real Corregida
 
         const response = await fetch(urlServer, {
             method: 'POST',
@@ -49,6 +49,7 @@ document.getElementById('formIngreso').addEventListener('submit', async (e) => {
         });
 
         const resultado = await response.json();
+
 
         if (response.ok) {
             msgBox.textContent = `✅ ¡Operación Exitosa! La ficha oncológica del paciente ${pacienteData.nombre} ha sido registrada correctamente en MongoDB Atlas.`;

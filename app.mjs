@@ -36,6 +36,9 @@ app.get('/', (req, res) => {
   res.send('🚀 Servidor de control de pacientes activo y corriendo.');
 });
 
+
+
+
 // Render inyectará el puerto correcto automáticamente aquí
 const PORT = process.env.PORT || 3000; 
 
