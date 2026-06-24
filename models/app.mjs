@@ -1,51 +1,73 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors'; // Requerido para permitir que tu HTML hable con el backend
-import rutasPacientes from './routes/pacientes.mjs';
-import dotenv from 'dotenv';
+document.getElementById('formIngreso').addEventListener('submit', async (e) => {
+    // 1. Evitar el comportamiento por defecto de recargar la página
+    e.preventDefault(); 
 
-// Inicializar variables de entorno del archivo .env local
-dotenv.config();
+    // 2. Elemento de feedback visual para el usuario médico
+    const msgBox = document.getElementById('ing-msg');
+    msgBox.textContent = "Procesando registro clínico en el sistema...";
+    msgBox.className = "msg-box info";
 
-const app = express();
+    // 3. Capturar el valor del botón de radio seleccionado (Comité Oncológico)
+    const seleccionadoComite = document.querySelector('input[name="ing-comite"]:checked');
 
-// 🛠️ MIDDLEWARES
-app.use(cors()); // Permite peticiones externas desde tu interfaz HTML
-app.use(express.json()); // Permite procesar los datos JSON enviados por el formulario
+    // 4. Construir el objeto JSON respetando exactamente la estructura del backend y Mongoose
+    const pacienteData = {
+        nombre: document.getElementById('ing-nombre').value.trim(),
+        rut: document.getElementById('ing-rut').value.trim(),
+        edad: parseInt(document.getElementById('ing-edad').value, 10),
+        ficha: document.getElementById('ing-ficha').value.trim(),
+        fechaNacimiento: document.getElementById('ing-fecha-nacimiento').value,
+        fechaIngreso: document.getElementById('ing-fecha-ingreso').value,
+        diagnostico: document.getElementById('ing-diagnostico').value.trim(),
+        cirugiasPrevias: document.getElementById('ing-cirugias').value.trim(),
+        biopsiasPrevias: document.getElementById('ing-biopsias').value.trim(),
+        qtRtPrevia: document.getElementById('ing-qt-rt').value.trim(),
+        presentadoComite: seleccionadoComite ? seleccionadoComite.value : "No",
+        fechasEstudios: {
+            tac: document.getElementById('ing-fecha-tac').value || null,
+            petCt: document.getElementById('ing-fecha-pet').value || null,
+            rnmCerebro: document.getElementById('ing-fecha-rnm').value || null
+        },
+        evaluaciones: {
+            dlco: document.getElementById('ing-dlco').value,
+            espirometria: document.getElementById('ing-espirometria').value,
+            ecocardio: document.getElementById('ing-ecocardio').value
+        },
+        especialidadPaseQx: document.getElementById('ing-pase-qx').value.trim() || null,
+        otros: document.getElementById('ing-otros').value.trim()
+    };
 
-// Servir archivos estáticos (para que Render pueda cargar tu HTML, CSS y JS frontend automáticamente)
-app.use(express.static('public'));
+    try {
+        // 5. Detectar la URL dinámicamente según dónde estés ejecutando el sistema
+        const urlServer = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000/api/pacientes' 
+            : 'https://onrender.com';
 
-// 🔌 CONEXIÓN A MONGO DB ATLAS
-const MONGODB_URI = process.env.MONGO_URI;
+        // 6. Realizar la petición asíncrona mediante Fetch API
+        const response = await fetch(urlServer, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pacienteData)
+        });
 
-if (!MONGODB_URI) {
-  console.error('❌ Error crítico: La variable MONGO_URI no está configurada.');
-  process.exit(1);
-}
+        const resultado = await response.json();
 
-console.log('⏳ Conectando a MongoDB Atlas...');
+        // 7. Evaluar códigos de estado e informar al usuario médico
+        if (response.ok) {
+            msgBox.textContent = "✅ Ficha oncológica almacenada de forma segura en MongoDB Atlas.";
+            msgBox.className = "msg-box success";
+            document.getElementById('formIngreso').reset(); // Limpia los campos del formulario
+        } else {
+            // Captura los mensajes específicos de duplicados o campos vacíos enviados por el backend
+            msgBox.textContent = `❌ Error: ${resultado.message || 'No se pudo guardar la información.'}`;
+            msgBox.className = "msg-box error";
+        }
 
-// Conexión estable optimizada para producción
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('✅ MongoDB conectado exitosamente a la base de datos de pacientes.');
-  })
-  .catch((err) => {
-    console.error('❌ Error crítico al conectar a MongoDB Atlas:');
-    console.error(err.message);
-  });
-
-// 📊 RUTAS DEL SERVIDOR
-app.use('/api/pacientes', rutasPacientes);
-
-// Ruta base alternativa
-app.get('/status', (req, res) => {
-  res.json({ status: "active", message: "Servidor médico corriendo exitosamente." });
-});
-
-// 🚀 LEVANTAR SERVIDOR
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor médico corriendo exitosamente en el puerto ${PORT}`);
+    } catch (error) {
+        console.error("Error en la conexión HTTP:", error);
+        msgBox.textContent = "🚨 Error de red: Sin comunicación con el servidor médico central.";
+        msgBox.className = "msg-box error";
+    }
 });
