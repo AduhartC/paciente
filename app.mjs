@@ -1,9 +1,12 @@
+// app.mjs - ASEGÚRATE DE QUE ESTAS DOS LÍNEAS ESTÉN AL PRINCIPIO DE TODO:
+import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import rutasPacientes from './routes/pacientes.mjs';
 
 // Inicializamos Express
 const app = express();
+dotenv.config(); // Carga el archivo .env local si existe
 
 // Middleware obligatorio para que el servidor entienda datos en formato JSON
 app.use(express.json());
