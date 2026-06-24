@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -524,3 +525,477 @@ document.getElementById('formIngreso').addEventListener('submit', async (e) => {
         msgBox.className = "msg-box error";
     }
 });
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica RedSalud - Panel Médico</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f7f9fa; margin: 0; padding-bottom: 50px; }
+        /* Barra de Menú RedSalud */
+        .navbar { background-color: #004d51; display: flex; justify-content: center; padding: 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); sticky: top; }
+        .navbar a { color: #ffffff; text-decoration: none; padding: 10px 20px; margin: 0 5px; font-weight: bold; font-size: 15px; border-radius: 4px; transition: background 0.2s; cursor: pointer; }
+        .navbar a:hover, .navbar a.tab-activa { 
+    background-color: #00828a !important; 
+}
+        
+        /* Contenedores */
+        .container { max-width: 750px; margin: 40px auto; background: #ffffff; padding: 35px; border-radius: 8px; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #00828a; display: none; }
+        .container.tab-activa { 
+    display: block !important; 
+}
+        h2 { color: #004d51; margin-top: 0; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        
+        /* Formularios Estilizados */
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        label { display: block; margin-bottom: 5px; color: #4a5568; font-weight: bold; font-size: 13px; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        input:focus, textarea:focus { outline: none; border-color: #00b2b2; box-shadow: 0 0 0 3px rgba(0, 178, 178, 0.1); }
+        textarea { resize: vertical; height: 80px; }
+        
+        /* Botones RedSalud */
+        .btn-group { display: flex; gap: 15px; margin-top: 25px; }
+        button { padding: 12px 25px; border: none; font-size: 15px; font-weight: bold; cursor: pointer; border-radius: 25px; transition: background 0.2s; }
+        .btn-primary { background-color: #00828a; color: white; }
+        .btn-primary:hover { background-color: #00666c; }
+        .btn-secondary { background-color: #e2e8f0; color: #4a5568; }
+        .btn-secondary:hover { background-color: #cbd5e0; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-danger:hover { background-color: #bd2130; }
+        
+        /* Buscadores */
+        .search-box { display: flex; gap: 10px; margin-bottom: 25px; background: #edf2f7; padding: 15px; border-radius: 6px; }
+        
+        /* Alertas y Mensajes */
+        .alert-sms { background-color: #fff5f5; color: #c53030; border-left: 4px solid #fc8181; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        .msg-box { margin-top: 15px; font-weight: bold; text-align: center; }
+        
+        /* Tablas */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background-color: #f7f9fa; color: #004d51; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #edf2f7; font-size: 14px; }
+        .row-expired { background-color: #fff5f5; }
+        .badge-expired { background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+<!-- Menú de Navegación Superior -->
+<!-- 🚨 REEMPLAZA TU MENÚ ACTUAL POR ESTE QUE SÍ TIENE LOS ID EN LAS PESTAÑAS 🚨 -->
+
+<div class="navbar">
+    <a onclick="switchTab('tab-ingreso')" id="btn-tab-ingreso" class="tab-activa">Ingreso</a>
+    <a onclick="switchTab('tab-editar')" id="btn-tab-editar">Editar</a>
+    <a onclick="switchTab('tab-consulta')" id="btn-tab-consulta">Consulta</a>
+    <a onclick="switchTab('tab-eliminar')" id="btn-tab-eliminar">Eliminar</a>
+    <a onclick="switchTab('tab-fecha')" id="btn-tab-fecha">Fecha Examen</a>
+</div>
+
+
+
+<!-- SECCIÓN 1: INGRESO -->
+<div id="tab-ingreso" class="container active">
+    <h2>📋 Formulario de Ingreso de Pacientes</h2>
+    <form id="formIngreso" class="grid-form">
+        <div>
+            <label>RUT Paciente:</label>
+            <input type="text" id="ing-rut" placeholder="12345678-9" required>
+        </div>
+        <div>
+            <label>Nombre Completo:</label>
+            <input type="text" id="ing-nombre" placeholder="Juan Pérez" required>
+        </div>
+        <div>
+            <label>Teléfono:</label>
+            <input type="text" id="ing-telefono" placeholder="+56912345678" required>
+        </div>
+        <div>
+            <label>Correo Electrónico:</label>
+            <input type="email" id="ing-correo" placeholder="juan@email.com" required>
+        </div>
+        <div>
+            <label>Dirección Residencia:</label>
+            <input type="text" id="ing-direccion" placeholder="Av. Balmaceda 1420" required>
+        </div>
+        <div>
+            <label>Ciudad:</label>
+            <input type="text" id="ing-ciudad" placeholder="La Serena" required>
+        </div>
+        <div>
+            <label>Diagnóstico Primario (1):</label>
+            <input type="text" id="ing-diag1" placeholder="Hipertensión Arterial">
+        </div>
+        <div>
+            <label>Diagnóstico Secundario (2):</label>
+            <input type="text" id="ing-diag2" placeholder="Diabetes Mellitus Tipo 2">
+        </div>
+        <div class="full-width">
+            <label>Diagnóstico Adicional (3):</label>
+            <input type="text" id="ing-diag3" placeholder="Dislipidemia">
+        </div>
+        <div class="full-width">
+            <label>Fecha Próximo Examen Crítico:</label>
+            <input type="date" id="ing-fecha" required>
+        </div>
+        <div class="full-width">
+            <label>Observaciones y Glosa Médica:</label>
+            <textarea id="ing-obs" placeholder="Escriba aquí antecedentes clínicos relevantes o detalles adicionales del paciente..."></textarea>
+        </div>
+        <div class="full-width">
+            <button type="submit" class="btn-primary">Registrar Ficha Médica</button>
+        </div>
+    </form>
+    <div id="ing-msg" class="msg-box"></div>
+</div>
+
+<!-- SECCIÓN 2: EDITAR -->
+<div id="tab-editar" class="container">
+    <h2>Modify Editar Ficha de Paciente</h2>
+    <div class="search-box">
+        <input type="text" id="edit-search" placeholder="Escriba el RUT o nombre a buscar...">
+        <button onclick="buscarParaEditar()" class="btn-primary" style="margin:0; padding:10px 20px;">Buscar</button>
+    </div>
+    <div id="edit-form-block" style="display:none;">
+        <form id="formEditar" class="grid-form">
+            <input type="hidden" id="edit-id">
+            <div><label>RUT:</label><input type="text" id="edit-rut" readonly style="background:#edf2f7;"></div>
+            <div><label>Nombre:</label><input type="text" id="edit-nombre" required></div>
+            <div><label>Teléfono:</label><input type="text" id="edit-telefono" required></div>
+            <div><label>Correo:</label><input type="text" id="edit-correo" required></div>
+            <div><label>Dirección:</label><input type="text" id="edit-direccion" required></div>
+            <div><label>Ciudad:</label><input type="text" id="edit-ciudad" required></div>
+            <div><label>Diagnóstico 1:</label><input type="text" id="edit-diag1"></div>
+            <div><label>Diagnóstico 2:</label><input type="text" id="edit-diag2"></div>
+            <div class="full-width"><label>Diagnóstico 3:</label><input type="text" id="edit-diag3"></div>
+            <div class="full-width"><label>Fecha Examen:</label><input type="date" id="edit-fecha" required></div>
+            <div class="full-width"><label>Observaciones:</label><textarea id="edit-obs"></textarea></div>
+            <div class="full-width btn-group">
+                <button type="submit" class="btn-primary">Actualizar Ficha</button>
+                <button type="button" onclick="irAlInicio()" class="btn-secondary">Regresar al Inicio</button>
+            </div>
+        </form>
+    </div>
+    <div id="edit-msg" class="msg-box"></div>
+</div>
+
+<!-- SECCIÓN 3: CONSULTA -->
+<div id="tab-consulta" class="container">
+    <h2>🔍 Módulo de Consulta Clínica</h2>
+    <div class="search-box">
+        <input type="text" id="query-search" placeholder="Ingrese el RUT o nombre completo del paciente...">
+        <button onclick="ejecutarConsulta()" class="btn-primary" style="margin:0; padding:10px 20px;">Consultar</button>
+    </div>
+    <div id="query-result" style="display:none; background:#f7f9fa; padding:20px; border-radius:6px; border:1px solid #e2e8f0;">
+        <div class="grid-form" style="font-size:15px;">
+            <p><strong>RUT:</strong> <span id="q-rut"></span></p>
+            <p><strong>Nombre:</strong> <span id="q-nombre"></span></p>
+            <p><strong>Teléfono:</strong> <span id="q-telefono"></span></p>
+            <p><strong>Correo:</strong> <span id="q-correo"></span></p>
+            <p><strong>Dirección:</strong> <span id="q-direccion"></span></p>
+            <p><strong>Ciudad:</strong> <span id="q-ciudad"></span></p>
+            <p><strong>Diagnóstico 1:</strong> <span id="q-diag1"></span></p>
+            <p><strong>Diagnóstico 2:</strong> <span id="q-diag2"></span></p>
+            <p><strong>Diagnóstico 3:</strong> <span id="q-diag3"></span></p>
+            <p><strong>Fecha Próximo Examen:</strong> <span id="q-fecha" style="font-weight:bold;"></span></p>
+            <p class="full-width"><strong>Observaciones Clínicas:</strong><br><span id="q-obs" style="display:block; background:white; padding:10px; border-radius:4px; margin-top:5px; border:1px solid #edf2f7;"></span></p>
+        </div>
+    </div>
+    <div id="query-msg" class="msg-box"></div>
+</div>
+
+<!-- SECCIÓN 4: ELIMINAR -->
+<div id="tab-eliminar" class="container">
+    <h2>❌ Dar de Baja Registro Médico</h2>
+    <div class="search-box">
+
+      <script>
+    // 🔀 Función global para alternar pestañas
+   function switchTab(tabId) {
+    try {
+        // 1. Oculta las secciones quitando la nueva clase
+        document.querySelectorAll('.container').forEach(c => c.classList.remove('tab-activa'));
+
+        // 2. Apaga el estado visual de los botones del menú
+        document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('tab-activa'));
+        
+        // 3. Muestra la sección seleccionada
+        const contenedorDestino = document.getElementById(tabId);
+        if (contenedorDestino) contenedorDestino.classList.add('tab-activa');
+
+        // 4. Enciende el botón del menú seleccionado
+        const botonDestino = document.getElementById('btn-' + tabId);
+        if (botonDestino) botonDestino.classList.add('tab-activa');
+        
+        document.querySelectorAll('.msg-box').forEach(m => m.innerHTML = "");
+        if(tabId === 'tab-fecha') { cargarListadoCronologicoExamenes(); }
+    } catch (error) {
+        console.error("Error en cambio de pestañas:", error.message);
+    }
+}
+
+
+    // 🔙 Función para regresar a la pantalla de Ingreso
+    function irAlInicio() {
+        try {
+            const form = document.getElementById('formEditar');
+            if(form) form.reset();
+            
+            const block = document.getElementById('edit-form-block');
+            if(block) block.style.display = "none";
+            
+            const searchInput = document.getElementById('edit-search');
+            if(searchInput) searchInput.value = "";
+            
+            switchTab('tab-ingreso');
+        } catch (e) {
+            switchTab('tab-ingreso');
+        }
+    }
+
+    // 🟢 ACCIÓN: Registrar un nuevo Paciente
+    const formIngreso = document.getElementById('formIngreso');
+    if (formIngreso) {
+        formIngreso.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('ing-msg');
+            if(!msg) return;
+
+            const payload = {
+                rut: document.getElementById('ing-rut').value,
+                nombre: document.getElementById('ing-nombre').value,
+                telefono: document.getElementById('ing-telefono').value,
+                correo: document.getElementById('ing-correo').value,
+                direccion: document.getElementById('ing-direccion').value,
+                ciudad: document.getElementById('ing-ciudad').value,
+                diagnostico1: document.getElementById('ing-diag1').value,
+                diagnostico2: document.getElementById('ing-diag2').value,
+                diagnostico3: document.getElementById('ing-diag3').value,
+                fechaExamen: document.getElementById('ing-fecha').value,
+                observaciones: document.getElementById('ing-obs').value
+            };
+
+            try {
+                const res = await fetch('/api/pacientes/registro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    msg.style.color = '#28a745';
+                    msg.innerHTML = `✅ ${data.mensaje}`;
+                    formIngreso.reset();
+                } else {
+                    msg.style.color = '#dc3545';
+                    msg.innerHTML = `❌ ${data.error}`;
+                }
+            } catch (err) {
+                msg.innerHTML = "❌ Error de comunicación con la API";
+            }
+        });
+    }
+
+    // 🟡 ACCIÓN: Buscar para rellenar formulario de Edición
+    async function buscarParaEditar() {
+        const criterio = document.getElementById('edit-search').value;
+        const msg = document.getElementById('edit-msg');
+        const block = document.getElementById('edit-form-block');
+        if(!criterio || !msg || !block) return;
+        
+        block.style.display = "none";
+        msg.innerHTML = "";
+
+        try {
+            const res = await fetch(`/api/pacientes/buscar/${criterio}`);
+            const data = await res.json();
+            if(res.ok) {
+                document.getElementById('edit-id').value = data._id;
+                document.getElementById('edit-rut').value = data.rut;
+                document.getElementById('edit-nombre').value = data.nombre;
+                document.getElementById('edit-telefono').value = data.telefono;
+                document.getElementById('edit-correo').value = data.correo;
+                document.getElementById('edit-direccion').value = data.direccion;
+                document.getElementById('edit-ciudad').value = data.ciudad;
+                document.getElementById('edit-diag1').value = data.diagnostico1 || "";
+                document.getElementById('edit-diag2').value = data.diagnostico2 || "";
+                document.getElementById('edit-diag3').value = data.diagnostico3 || "";
+                
+                if(data.fechaExamen) {
+                    document.getElementById('edit-fecha').value = data.fechaExamen.split('T')[0];
+                }
+                document.getElementById('edit-obs').value = data.observaciones || "";
+                block.style.display = "block";
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch(err) { 
+            msg.style.color = '#dc3545';
+            msg.innerHTML = "❌ Error al conectar al buscar ficha"; 
+        }
+    }
+
+    // 🟡 ACCIÓN: Guardar los cambios editados
+    const formEditar = document.getElementById('formEditar');
+    if (formEditar) {
+        formEditar.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const msg = document.getElementById('edit-msg');
+            if(!msg) return;
+
+            const payload = {
+                nombre: document.getElementById('edit-nombre').value,
+                telefono: document.getElementById('edit-telefono').value,
+                correo: document.getElementById('edit-correo').value,
+                direccion: document.getElementById('edit-direccion').value,
+                ciudad: document.getElementById('edit-ciudad').value,
+                diagnostico1: document.getElementById('edit-diag1').value,
+                diagnostico2: document.getElementById('edit-diag2').value,
+                diagnostico3: document.getElementById('edit-diag3').value,
+                fechaExamen: document.getElementById('edit-fecha').value,
+                observaciones: document.getElementById('edit-obs').value
+            };
+
+            try {
+                const res = await fetch(`/api/pacientes/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    msg.style.color = '#28a745';
+                    msg.innerHTML = `✅ ${data.mensaje}`;
+                    setTimeout(() => {
+                        document.getElementById('edit-form-block').style.display = "none";
+                        document.getElementById('edit-search').value = "";
+                        msg.innerHTML = "";
+                    }, 2000);
+                } else {
+                    msg.style.color = '#dc3545';
+                    msg.innerHTML = `❌ ${data.error}`;
+                }
+            } catch(err) { 
+                msg.style.color = '#dc3545';
+                msg.innerHTML = "❌ Error al procesar actualización."; 
+            }
+        });
+    }
+
+       // 🔍 ACCIÓN: Módulo de Consulta Clínica
+    async function ejecutarConsulta() {
+        const criterio = document.getElementById('query-search').value;
+        const msg = document.getElementById('query-msg');
+        const resultDiv = document.getElementById('query-result');
+        if (!criterio || !msg || !resultDiv) return;
+
+        resultDiv.style.display = "none";
+        msg.innerHTML = "";
+
+        try {
+            const res = await fetch(`/api/pacientes/buscar/${criterio}`);
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('q-rut').innerText = data.rut;
+                document.getElementById('q-nombre').innerText = data.nombre;
+                document.getElementById('q-telefono').innerText = data.telefono;
+                document.getElementById('q-correo').innerText = data.correo;
+                document.getElementById('q-direccion').innerText = data.direccion;
+                document.getElementById('q-ciudad').innerText = data.ciudad;
+                document.getElementById('q-diag1').innerText = data.diagnostico1 || "Ninguno";
+                document.getElementById('q-diag2').innerText = data.diagnostico2 || "Ninguno";
+                document.getElementById('q-diag3').innerText = data.diagnostico3 || "Ninguno";
+                document.getElementById('q-fecha').innerText = new Date(data.fechaExamen).toLocaleDateString('es-CL');
+                document.getElementById('q-obs').innerText = data.observaciones || "Sin observaciones.";
+                resultDiv.style.display = "block";
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch (err) {
+            msg.style.color = '#dc3545';
+            msg.innerHTML = "❌ Error de conexión al consultar.";
+        }
+    }
+
+    // 🔴 ACCIÓN: Dar de Baja (Eliminar) Paciente
+    async function confirmarBaja() {
+        const criterio = document.getElementById('del-search').value;
+        const msg = document.getElementById('del-msg');
+        if (!criterio || !msg) return;
+        msg.innerHTML = "";
+        
+        if (!confirm("¿Desea eliminar permanentemente este registro clínico?")) return;
+        
+        try {
+            const res = await fetch(`/api/pacientes/${criterio}`, { method: 'DELETE' });
+            const data = await res.json();
+            if (res.ok) {
+                msg.style.color = '#28a745';
+                msg.innerHTML = `✅ ${data.mensaje}`;
+                document.getElementById('del-search').value = "";
+            } else {
+                msg.style.color = '#dc3545';
+                msg.innerHTML = `❌ ${data.error}`;
+            }
+        } catch (err) {
+            msg.style.color = '#dc3545';
+            msg.innerHTML = "❌ Error al intentar eliminar.";
+        }
+    }
+
+    // 📅 ACCIÓN: Control Cronológico de Exámenes
+    async function cargarListadoCronologicoExamenes() {
+        const tbody = document.getElementById('tbodyExamenes');
+        const alertBox = document.getElementById('bloque-alertas-sms');
+        if (!tbody) return;
+        
+        try {
+            const res = await fetch('/api/pacientes/listado-examenes');
+            const pacientes = await res.json();
+            tbody.innerHTML = "";
+            if (alertBox) alertBox.innerHTML = "";
+            
+            pacientes.forEach(p => {
+                const fecha = new Date(p.fechaExamen);
+                const fechaTexto = fecha.toLocaleDateString('es-CL');
+                let rowClass = "";
+                let badge = `<span style="color:#28a745; font-weight:bold;">Vigente</span>`;
+                
+                if (p.requiereExamen) {
+                    rowClass = "row-expired";
+                    badge = `<span class="badge-expired" style="background-color:#dc3545; color:white; padding:3px 8px; border-radius:4px; font-weight:bold; font-size:11px;">⚠️ VENCIDO</span>`;
+                    if (alertBox) {
+                        alertBox.innerHTML += `
+                            <div class="alert-sms" style="background-color:#fff5f5; color:#c53030; border-left:4px solid #fc8181; padding:12px; margin-bottom:15px; border-radius:4px; font-weight:bold; font-size:13px;">
+                                💬 [SMS ENVIADO]: Estimado(a) ${p.nombre}, su examen límite programado para el ${fechaTexto} está vencido. Acuda a RedSalud.
+                            </div>
+                        `;
+                    }
+                }
+                
+                const fila = `
+                    <tr class="${rowClass}">
+                        <td><strong>${p.nombre}</strong></td>
+                        <td>${p.telefono}</td>
+                        <td>${p.correo}</td>
+                        <td>${fechaTexto}</td>
+                        <td>${badge}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += fila;
+            });
+            
+            if (pacientes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay pacientes registrados.</td></tr>`;
+            }
+        } catch (err) {
+            console.error("Error cargando listado", err);
+        }
+    }
+>>>>>>> 285696c9f9d651c7de6734394facf82b391307fd
