@@ -4,16 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Pacientes</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { text-align: center; color: #333; margin-bottom: 20px; }
-        label { display: block; margin: 10px 0 5px; color: #666; font-weight: bold; }
-        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 20px; }
-        button:hover { background-color: #218838; }
-        #mensaje { margin-top: 15px; text-align: center; font-weight: bold; }
+      <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f7f9fa; /* Gris claro de fondo RedSalud */
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            height: auto; 
+            padding: 40px 20px;
+            margin: 0; 
+        }
+        .form-container, .lista-container { 
+            background: #ffffff; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            width: 100%; 
+            max-width: 500px; 
+            box-sizing: border-box;
+            border-top: 5px solid #00828a; /* Línea superior verde azulado */
+        }
+        .lista-container {
+            max-width: 700px;
+            margin-top: 30px;
+            border-top: 5px solid #00b2b2; /* Línea superior celeste */
+        }
+        h2, h3 { 
+            text-align: center; 
+            color: #004d51; /* Texto oscuro institucional */
+            margin-top: 0;
+            margin-bottom: 20px; 
+        }
+        label { 
+            display: block; 
+            margin: 15px 0 5px; 
+            color: #4a5568; 
+            font-weight: bold; 
+            font-size: 14px;
+        }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #cbd5e0; 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00b2b2; /* Borde celeste al hacer clic */
+            box-shadow: 0 0 0 3px rgba(0, 178, 178, 0.1);
+        }
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            background-color: #00828a; /* Verde azulado principal */
+            color: white; 
+            border: none; 
+            border-radius: 25px; /* Botón redondeado institucional */
+            font-size: 16px; 
+            font-weight: bold;
+            cursor: pointer; 
+            margin-top: 25px; 
+            transition: background-color 0.2s;
+        }
+        button:hover { 
+            background-color: #00666c; /* Tono más oscuro al pasar el mouse */
+        }
+        #mensaje { 
+            margin-top: 15px; 
+            text-align: center; 
+            font-weight: bold; 
+        }
+        /* Estilos de la tabla de registros */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th {
+            background-color: #f7f9fa;
+            color: #004d51;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #edf2f7;
+            color: #2d3748;
+        }
     </style>
+
 </head>
 <body>
 
