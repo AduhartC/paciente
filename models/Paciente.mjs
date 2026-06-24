@@ -1,25 +1,118 @@
 import mongoose from 'mongoose';
 
-const pacienteSchema = new mongoose.Schema({
-  rut: { type: String, required: true, unique: true, index: true },
-  nombre: { type: String, required: true, index: true },
-  telefono: { type: String, required: true },
-  correo: { type: String, required: true },
-  direccion: { type: String, required: true },
-  ciudad: { type: String, required: true },
-  diagnostico1: { type: String, default: "" },
-  diagnostico2: { type: String, default: "" },
-  diagnostico3: { type: String, default: "" },
-  fechaExamen: { type: Date, required: true },
-  observaciones: { type: String, default: "" },
-  requiereExamen: { type: Boolean, default: false }
-}, { timestamps: true });
+const PacienteSchema = new mongoose.Schema({
+    // Identificación Básica del Paciente
+    nombre: { 
+        type: String, 
+        required: [true, 'El nombre del paciente es obligatorio'], 
+        trim: true 
+    },
+    rut: { 
+        type: String, 
+        required: [true, 'El RUT es obligatorio'], 
+        unique: true, 
+        trim: true 
+    },
+    edad: { 
+        type: Number, 
+        required: [true, 'La edad es obligatoria'],
+        min: [0, 'La edad no puede ser menor a 0'],
+        max: [120, 'La edad no puede superar los 120 años']
+    },
+    ficha: { 
+        type: String, 
+        required: [true, 'El número de ficha clínica es obligatorio'], 
+        unique: true, 
+        trim: true 
+    },
+    fechaNacimiento: { 
+        type: Date, 
+        required: [true, 'La fecha de nacimiento es obligatoria'] 
+    },
+    fechaIngreso: { 
+        type: Date, 
+        required: [true, 'La fecha de registro es obligatoria'],
+        default: Date.now 
+    },
 
-// Middleware automático pre-guardado para calcular las alertas en tiempo real
-pacienteSchema.pre('save', function(next) {
-  const hoy = new Date();
-  this.requiereExamen = this.fechaExamen <= hoy;
-  next();
+    // Historial Médico y Tratamiento
+    diagnostico: { 
+        type: String, 
+        required: [true, 'El diagnóstico principal es obligatorio'], 
+        trim: true 
+    },
+    cirugiasPrevias: { 
+        type: String, 
+        trim: true, 
+        default: "" 
+    },
+    biopsiasPrevias: { 
+        type: String, 
+        trim: true, 
+        default: "" 
+    },
+    qtRtPrevia: { 
+        type: String, 
+        trim: true, 
+        default: "" 
+    },
+
+    // Comité Oncológico
+    presentadoComite: { 
+        type: String, 
+        enum: {
+            values: ['Sí', 'No'],
+            message: 'El campo Comité Oncológico solo acepta "Sí" o "No"'
+        },
+        required: true, 
+        default: 'No' 
+    },
+
+    // Seguimiento de Exámenes Imagenológicos (Objetos Anidados)
+    fechasEstudios: {
+        tac: { type: Date, default: null },
+        petCt: { type: Date, default: null },
+        rnmCerebro: { type: Date, default: null }
+    },
+
+    // Pruebas Funcionales Fisiológicas con Opciones Estrictas
+    evaluaciones: {
+        dlco: { 
+            type: String, 
+            enum: ['Listo', 'Pendiente', 'No necesario'], 
+            required: true,
+            default: 'Pendiente'
+        },
+        espirometria: { 
+            type: String, 
+            enum: ['Listo', 'Pendiente', 'No necesario'], 
+            required: true,
+            default: 'Pendiente'
+        },
+        ecocardio: { 
+            type: String, 
+            enum: ['Listo', 'Pendiente', 'No necesario'], 
+            required: true,
+            default: 'Pendiente'
+        }
+    },
+
+    // Requerimientos Adicionales
+    especialidadPaseQx: { 
+        type: String, 
+        trim: true, 
+        default: null 
+    },
+    otros: { 
+        type: String, 
+        trim: true, 
+        default: "" 
+    }
+}, {
+    // Crea automáticamente los campos createdAt y updatedAt para cada registro en Atlas
+    timestamps: true 
 });
 
-export default mongoose.model('Paciente', pacienteSchema);
+// Exportar el modelo utilizando la sintaxis de módulos ES
+const Paciente = mongoose.models.Paciente || mongoose.model('Paciente', PacienteSchema);
+export default Paciente;
