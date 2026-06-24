@@ -470,3 +470,57 @@
             console.error("Error cargando listado", err);
         }
     }
+document.getElementById('formIngreso').addEventListener('submit', async (e) => {
+    // 1. Evitar que la página se recargue al enviar el formulario
+    e.preventDefault(); 
+
+    // 2. Obtener el contenedor de mensajes para dar feedback al usuario
+    const msgBox = document.getElementById('ing-msg');
+    msgBox.textContent = "Procesando registro...";
+    msgBox.className = "msg-box info"; // Clase visual para estado de carga
+
+    // 3. Capturar y estructurar todos los campos del formulario
+    const pacienteData = {
+        rut: document.getElementById('ing-rut').value.trim(),
+        nombre: document.getElementById('ing-nombre').value.trim(),
+        telefono: document.getElementById('ing-telefono').value.trim(),
+        correo: document.getElementById('ing-correo').value.trim(),
+        direccion: document.getElementById('ing-direccion').value.trim(),
+        ciudad: document.getElementById('ing-ciudad').value.trim(),
+        diagnosticos: [
+            document.getElementById('ing-diag1').value.trim(),
+            document.getElementById('ing-diag2').value.trim(),
+            document.getElementById('ing-diag3').value.trim()
+        ].filter(d => d !== ""), // Filtra y elimina diagnósticos vacíos
+        fechaExamen: document.getElementById('ing-fecha').value,
+        observaciones: document.getElementById('ing-obs').value.trim()
+    };
+
+    try {
+        // 4. Enviar los datos estructurados a tu servidor Node.js
+        const response = await fetch('http://localhost:3000/api/pacientes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pacienteData)
+        });
+
+        const resultado = await response.json();
+
+        // 5. Evaluar la respuesta del servidor y mostrar el resultado en pantalla
+        if (response.ok) {
+            msgBox.textContent = "✅ Ficha médica registrada exitosamente en el sistema.";
+            msgBox.className = "msg-box success";
+            document.getElementById('formIngreso').reset(); // Limpia el formulario
+        } else {
+            msgBox.textContent = `❌ Error: ${resultado.message || 'No se pudo guardar la ficha.'}`;
+            msgBox.className = "msg-box error";
+        }
+
+    } catch (error) {
+        console.error("Error en la petición:", error);
+        msgBox.textContent = "🚨 Error de red: No se pudo conectar con el servidor médico.";
+        msgBox.className = "msg-box error";
+    }
+});
