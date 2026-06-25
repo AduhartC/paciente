@@ -297,10 +297,11 @@ td {
     }
 
 /* HAMBURGUESA */
+
+}
 .hamburger {
     display: none;
     font-size: 26px;
     color: white;
     cursor: pointer;
-}
 }
