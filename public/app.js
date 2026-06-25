@@ -74,7 +74,7 @@ document.getElementById('formIngreso')?.addEventListener('submit', async (e) => 
         msgBox.textContent = "❌ Error de conexión";
     }
 });
-
+/*
 
 // ======================
 // 🔍 BUSCAR PACIENTE
@@ -147,3 +147,4 @@ document.getElementById('formEditar')?.addEventListener('submit', async (e) => {
         alert("Error de conexión");
     }
 });
+*/
