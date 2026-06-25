@@ -115,50 +115,39 @@ router.get('/buscar', async (req, res) => {
 
 // 🟢 UPDATE SEGURO
 router.patch('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    // ❌ proteger campos críticos
-    delete req.body.rut;
-    delete req.body.nombre;
+        // 🔒 proteger campos críticos
+        delete req.body.rut;
+        delete req.body.nombre;
 
-    // 🔒 asegurar edad válida si viene
-    if (req.body.edad !== undefined) {
-      req.body.edad = Number(req.body.edad);
+        const actualizado = await Paciente.findByIdAndUpdate(
+            id,
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                strict: false
+            }
+        );
 
-      if (req.body.edad < 0 || req.body.edad > 120) {
-        return res.status(400).json({
-          message: "Edad fuera de rango"
+        if (!actualizado) {
+            return res.status(404).json({ message: "Paciente no encontrado" });
+        }
+
+        res.json({
+            message: "Actualizado correctamente",
+            data: actualizado
         });
-      }
+
+    } catch (error) {
+        console.error("PATCH ERROR:", error);
+        res.status(500).json({
+            message: "Error al actualizar",
+            error: error.message
+        });
     }
-
-    const actualizado = await Paciente.findByIdAndUpdate(
-      id,
-      req.body,
-      {
-        new: true,
-        runValidators: true
-      }
-    );
-
-    if (!actualizado) {
-      return res.status(404).json({
-        message: "Paciente no encontrado"
-      });
-    }
-
-    res.json({
-      message: "Paciente actualizado correctamente",
-      data: actualizado
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: "Error al actualizar",
-      error: error.message
-    });
-  }
 });
 
 export default router;
