@@ -1,121 +1,74 @@
-let pacienteId = null;
-
-// ======================
-// 🔍 BUSCAR
-// ======================
 document.getElementById("btnBuscar").addEventListener("click", async () => {
 
-    const buscar = document.getElementById("buscar").value.trim();
+    const valor = document.getElementById("buscar").value.trim();
 
-    if (!buscar) return alert("Ingrese RUT o Nombre");
+    if (!valor) return alert("Ingrese RUT o nombre");
 
-    const res = await fetch(`/api/pacientes/buscar?buscar=${encodeURIComponent(buscar)}`);
+    const res = await fetch(`/api/pacientes/buscar?buscar=${encodeURIComponent(valor)}`);
     const data = await res.json();
 
     if (!res.ok) {
-        return alert(data.message);
+        alert(data.message);
+        return;
     }
 
-    pacienteId = data._id;
+    // 🔥 SI SOLO HAY 1 → abrir directo
+    if (data.length === 1) {
+        cargarPaciente(data[0]);
+        return;
+    }
 
-    document.getElementById("formEditar").style.display = "grid";
+    // 🔥 SI HAY VARIOS → mostrar lista
+    mostrarResultados(data);
+});
 
-    // 🔒 IDENTIFICACIÓN (bloqueado)
-    document.getElementById("edit-nombre").value = data.nombre;
+let pacienteId = null;
+
+function cargarPaciente(p) {
+    pacienteId = p._id;
+
+    document.getElementById("formEditar").style.display = "block";
+
+    // bloqueados (NO EDITABLES)
+    document.getElementById("edit-nombre").value = p.nombre;
+    document.getElementById("edit-rut").value = p.rut;
+
     document.getElementById("edit-nombre").disabled = true;
-
-    document.getElementById("edit-rut").value = data.rut;
     document.getElementById("edit-rut").disabled = true;
 
-    // EDITABLE
-    document.getElementById("edit-edad").value = data.edad || "";
-    document.getElementById("edit-ficha").value = data.ficha || "";
+    // editables
+    document.getElementById("edit-edad").value = p.edad || "";
+    document.getElementById("edit-ficha").value = p.ficha || "";
+    document.getElementById("edit-diagnostico").value = p.diagnostico || "";
 
     document.getElementById("edit-fechaNacimiento").value =
-        data.fechaNacimiento ? data.fechaNacimiento.substring(0,10) : "";
-
-    document.getElementById("edit-fechaIngreso").value =
-        data.fechaIngreso ? data.fechaIngreso.substring(0,10) : "";
-
-    document.getElementById("edit-diagnostico").value = data.diagnostico || "";
-
-    document.getElementById("edit-cirugias").value = data.cirugiasPrevias || "";
-    document.getElementById("edit-biopsias").value = data.biopsiasPrevias || "";
-    document.getElementById("edit-qt-rt").value = data.qtRtPrevia || "";
-
-    document.getElementById("edit-comite").value = data.presentadoComite || "No";
-
-    document.getElementById("edit-tac").value = data.fechasEstudios?.tac?.substring(0,10) || "";
-    document.getElementById("edit-pet").value = data.fechasEstudios?.petCt?.substring(0,10) || "";
-    document.getElementById("edit-rnm").value = data.fechasEstudios?.rnmCerebro?.substring(0,10) || "";
-
-    document.getElementById("edit-dlco").value = data.evaluaciones?.dlco || "Pendiente";
-    document.getElementById("edit-espirometria").value = data.evaluaciones?.espirometria || "Pendiente";
-    document.getElementById("edit-ecocardio").value = data.evaluaciones?.ecocardio || "Pendiente";
-
-    document.getElementById("edit-paseqx").value = data.especialidadPaseQx || "";
-    document.getElementById("edit-otros").value = data.otros || "";
-});
+        p.fechaNacimiento
+            ? new Date(p.fechaNacimiento).toISOString().split("T")[0]
+            : "";
+}
 
 
-// ======================
-// 💾 GUARDAR
-// ======================
-document.getElementById("formEditar").addEventListener("submit", async (e) => {
 
-    e.preventDefault();
 
-    if (!pacienteId) return alert("Primero busque un paciente");
 
-    const payload = {
 
-        edad: Number(document.getElementById("edit-edad").value),
+function mostrarResultados(lista) {
+    const cont = document.getElementById("resultados");
+    cont.innerHTML = "";
 
-        ficha: document.getElementById("edit-ficha").value,
+    lista.forEach(p => {
+        const div = document.createElement("div");
 
-        fechaNacimiento: document.getElementById("edit-fechaNacimiento").value,
+        const btn = document.createElement("button");
+        btn.textContent = "Abrir";
 
-        fechaIngreso: document.getElementById("edit-fechaIngreso").value,
+        btn.addEventListener("click", () => {
+            cargarPaciente(p);
+        });
 
-        diagnostico: document.getElementById("edit-diagnostico").value,
+        div.innerHTML = `<b>${p.nombre}</b> - ${p.rut} `;
+        div.appendChild(btn);
 
-        cirugiasPrevias: document.getElementById("edit-cirugias").value,
-
-        biopsiasPrevias: document.getElementById("edit-biopsias").value,
-
-        qtRtPrevia: document.getElementById("edit-qt-rt").value,
-
-        presentadoComite: document.getElementById("edit-comite").value,
-
-        fechasEstudios: {
-            tac: document.getElementById("edit-tac").value,
-            petCt: document.getElementById("edit-pet").value,
-            rnmCerebro: document.getElementById("edit-rnm").value
-        },
-
-        evaluaciones: {
-            dlco: document.getElementById("edit-dlco").value,
-            espirometria: document.getElementById("edit-espirometria").value,
-            ecocardio: document.getElementById("edit-ecocardio").value
-        },
-
-        especialidadPaseQx: document.getElementById("edit-paseqx").value,
-        otros: document.getElementById("edit-otros").value
-    };
-
-    const res = await fetch(`/api/pacientes/${pacienteId}`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+        cont.appendChild(div);
     });
-
-    const result = await res.json();
-
-    if (res.ok) {
-        alert("Paciente actualizado correctamente");
-    } else {
-        alert(result.message || "Error al actualizar");
-    }
-});
+}

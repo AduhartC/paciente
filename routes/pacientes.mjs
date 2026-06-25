@@ -90,27 +90,24 @@ router.post('/', async (req, res) => {
 // 🟢 SEARCH (ROBUSTO)
 router.get('/buscar', async (req, res) => {
     try {
-
         const { buscar } = req.query;
 
         if (!buscar) {
-            return res.status(400).json({ message: "Falta parámetro de búsqueda" });
+            return res.status(400).json({ message: "Debe ingresar búsqueda" });
         }
 
-        const clean = String(buscar).trim();
-
-        const paciente = await Paciente.findOne({
+        const pacientes = await Paciente.find({
             $or: [
-                { rut: clean },
-                { nombre: new RegExp(clean, 'i') }
+                { rut: { $regex: buscar, $options: "i" } },
+                { nombre: { $regex: buscar, $options: "i" } }
             ]
         });
 
-        if (!paciente) {
+        if (pacientes.length === 0) {
             return res.status(404).json({ message: "Paciente no encontrado" });
         }
 
-        res.json(paciente);
+        res.json(pacientes);
 
     } catch (error) {
         res.status(500).json({
@@ -119,7 +116,6 @@ router.get('/buscar', async (req, res) => {
         });
     }
 });
-
 
 // 🟢 UPDATE SEGURO
 router.patch('/:id', async (req, res) => {
