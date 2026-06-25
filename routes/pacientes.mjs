@@ -1,3 +1,8 @@
+import express from 'express';
+import Paciente from '../models/Paciente.mjs';
+
+const router = express.Router(); // 🔴 ESTO ES OBLIGATORIO
+
 router.post('/', async (req, res) => {
     try {
         const { rut, ficha, nombre } = req.body;
@@ -28,8 +33,7 @@ router.post('/', async (req, res) => {
         const nuevoPaciente = new Paciente({
             rut: cleanRut,
             ficha: cleanFicha,
-            nombre: cleanNombre,
-            ...req.body
+            nombre: cleanNombre
         });
 
         const pacienteGuardado = await nuevoPaciente.save();
@@ -48,4 +52,5 @@ router.post('/', async (req, res) => {
         });
     }
 });
-export default router;
+
+export default router; // 🔴 TAMBIÉN OBLIGATORIO
