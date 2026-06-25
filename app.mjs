@@ -7,34 +7,35 @@ import rutasPacientes from './routes/pacientes.mjs';
 // 1. Inicializar variables de entorno
 dotenv.config();
 
-// 2. Inicializar Express
+// 2. Inicializar la aplicación Express
 const app = express();
 
-// 3. Configuración de Middlewares (ORDEN ESTRICTO)
+// 3. Configuración de Middlewares globales de seguridad y datos
 app.use(cors()); 
-app.use(express.json()); // Primero habilitamos la lectura de JSON
-app.use(express.static('public')); // Luego servimos la carpeta pública
+app.use(express.json()); 
 
-// 4. Conexión a MongoDB Atlas
+// Servir la carpeta pública de forma estática sin redirecciones intermedias
+app.use(express.static('public'));
+
+// 4. Conexión limpia a tu base de datos de MongoDB Atlas
 console.log('⏳ Conectando a MongoDB Atlas...');
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB conectado exitosamente a la base de datos de pacientes.');
   })
   .catch((err) => {
-    console.error('❌ Error crítico al conectar a MongoDB Atlas:');
-    console.error(err.message);
+    console.error('❌ Error crítico al conectar a MongoDB Atlas:', err.message);
   });
 
-// 5. Rutas de la API
+// 5. Enlazar las rutas oficiales de la API Médica
 app.use('/api/pacientes', rutasPacientes);
 
-// Ruta base alternativa para chequear estado
-app.get('/status', (req, res) => {
-  res.json({ status: "online", message: "Servidor médico RedSalud activo." });
+// Endpoint de control rápido para verificar el estado sin chocar con el HTML
+app.get('/api/health', (req, res) => {
+  res.json({ status: "online", message: "Servidor médico RedSalud operando de forma óptima." });
 });
 
-// 6. Levantar Servidor
+// 6. Levantar Servidor en puertos de producción
 const PORT = process.env.PORT || 3000; 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor médico corriendo exitosamente en el puerto ${PORT}`);
