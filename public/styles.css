@@ -295,4 +295,12 @@ td {
         flex: 0 0 auto;
         margin-right: 10px;
     }
+
+/* HAMBURGUESA */
+.hamburger {
+    display: none;
+    font-size: 26px;
+    color: white;
+    cursor: pointer;
+}
 }
