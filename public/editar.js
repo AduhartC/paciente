@@ -1,125 +1,121 @@
 let pacienteId = null;
 
-// ==============================
-// BUSCAR PACIENTE
-// ==============================
+// ======================
+// 🔍 BUSCAR
+// ======================
 document.getElementById("btnBuscar").addEventListener("click", async () => {
 
     const buscar = document.getElementById("buscar").value.trim();
 
-    if (!buscar) {
-        alert("Ingrese un nombre o RUT");
-        return;
+    if (!buscar) return alert("Ingrese RUT o Nombre");
+
+    const res = await fetch(`/api/pacientes/buscar?buscar=${encodeURIComponent(buscar)}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+        return alert(data.message);
     }
 
-    try {
+    pacienteId = data._id;
 
-        const response = await fetch(`/api/pacientes/buscar?buscar=${encodeURIComponent(buscar)}`);
+    document.getElementById("formEditar").style.display = "grid";
 
-        const paciente = await response.json();
+    // 🔒 IDENTIFICACIÓN (bloqueado)
+    document.getElementById("edit-nombre").value = data.nombre;
+    document.getElementById("edit-nombre").disabled = true;
 
-        if (!response.ok) {
-            alert(paciente.message);
-            return;
-        }
+    document.getElementById("edit-rut").value = data.rut;
+    document.getElementById("edit-rut").disabled = true;
 
-        pacienteId = paciente._id;
+    // EDITABLE
+    document.getElementById("edit-edad").value = data.edad || "";
+    document.getElementById("edit-ficha").value = data.ficha || "";
 
-        document.getElementById("formEditar").style.display = "block";
+    document.getElementById("edit-fechaNacimiento").value =
+        data.fechaNacimiento ? data.fechaNacimiento.substring(0,10) : "";
 
-        // NO EDITABLES
-        document.getElementById("edit-nombre").value = paciente.nombre;
-        document.getElementById("edit-rut").value = paciente.rut;
+    document.getElementById("edit-fechaIngreso").value =
+        data.fechaIngreso ? data.fechaIngreso.substring(0,10) : "";
 
-        // EDITABLES
-        document.getElementById("edit-edad").value = paciente.edad || "";
+    document.getElementById("edit-diagnostico").value = data.diagnostico || "";
 
-        document.getElementById("edit-ficha").value = paciente.ficha || "";
+    document.getElementById("edit-cirugias").value = data.cirugiasPrevias || "";
+    document.getElementById("edit-biopsias").value = data.biopsiasPrevias || "";
+    document.getElementById("edit-qt-rt").value = data.qtRtPrevia || "";
 
-        document.getElementById("edit-fechaNacimiento").value =
-            paciente.fechaNacimiento
-            ? paciente.fechaNacimiento.substring(0,10)
-            : "";
+    document.getElementById("edit-comite").value = data.presentadoComite || "No";
 
-        document.getElementById("edit-diagnostico").value =
-            paciente.diagnostico || "";
+    document.getElementById("edit-tac").value = data.fechasEstudios?.tac?.substring(0,10) || "";
+    document.getElementById("edit-pet").value = data.fechasEstudios?.petCt?.substring(0,10) || "";
+    document.getElementById("edit-rnm").value = data.fechasEstudios?.rnmCerebro?.substring(0,10) || "";
 
-    }
+    document.getElementById("edit-dlco").value = data.evaluaciones?.dlco || "Pendiente";
+    document.getElementById("edit-espirometria").value = data.evaluaciones?.espirometria || "Pendiente";
+    document.getElementById("edit-ecocardio").value = data.evaluaciones?.ecocardio || "Pendiente";
 
-    catch(error){
-
-        console.error(error);
-
-        alert("Error buscando paciente");
-
-    }
-
+    document.getElementById("edit-paseqx").value = data.especialidadPaseQx || "";
+    document.getElementById("edit-otros").value = data.otros || "";
 });
 
 
-// ==============================
-// GUARDAR CAMBIOS
-// ==============================
-document.getElementById("formEditar").addEventListener("submit", async(e)=>{
+// ======================
+// 💾 GUARDAR
+// ======================
+document.getElementById("formEditar").addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    if(!pacienteId){
+    if (!pacienteId) return alert("Primero busque un paciente");
 
-        alert("Primero busque un paciente");
+    const payload = {
 
-        return;
+        edad: Number(document.getElementById("edit-edad").value),
 
-    }
+        ficha: document.getElementById("edit-ficha").value,
 
-    const datos={
+        fechaNacimiento: document.getElementById("edit-fechaNacimiento").value,
 
-        edad:Number(document.getElementById("edit-edad").value),
+        fechaIngreso: document.getElementById("edit-fechaIngreso").value,
 
-        ficha:document.getElementById("edit-ficha").value,
+        diagnostico: document.getElementById("edit-diagnostico").value,
 
-        fechaNacimiento:document.getElementById("edit-fechaNacimiento").value,
+        cirugiasPrevias: document.getElementById("edit-cirugias").value,
 
-        diagnostico:document.getElementById("edit-diagnostico").value
+        biopsiasPrevias: document.getElementById("edit-biopsias").value,
 
+        qtRtPrevia: document.getElementById("edit-qt-rt").value,
+
+        presentadoComite: document.getElementById("edit-comite").value,
+
+        fechasEstudios: {
+            tac: document.getElementById("edit-tac").value,
+            petCt: document.getElementById("edit-pet").value,
+            rnmCerebro: document.getElementById("edit-rnm").value
+        },
+
+        evaluaciones: {
+            dlco: document.getElementById("edit-dlco").value,
+            espirometria: document.getElementById("edit-espirometria").value,
+            ecocardio: document.getElementById("edit-ecocardio").value
+        },
+
+        especialidadPaseQx: document.getElementById("edit-paseqx").value,
+        otros: document.getElementById("edit-otros").value
     };
 
-    try{
+    const res = await fetch(`/api/pacientes/${pacienteId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
 
-        const response=await fetch(`/api/pacientes/${pacienteId}`,{
+    const result = await res.json();
 
-            method:"PATCH",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify(datos)
-
-        });
-
-        const resultado=await response.json();
-
-        if(response.ok){
-
-            alert("Paciente actualizado correctamente");
-
-        }
-
-        else{
-
-            alert(resultado.message);
-
-        }
-
+    if (res.ok) {
+        alert("Paciente actualizado correctamente");
+    } else {
+        alert(result.message || "Error al actualizar");
     }
-
-    catch(error){
-
-        console.error(error);
-
-        alert("Error de conexión");
-
-    }
-
 });
