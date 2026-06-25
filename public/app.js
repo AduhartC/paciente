@@ -1,8 +1,8 @@
 document.getElementById('formIngreso').addEventListener('submit', async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const msgBox = document.getElementById('ing-msg');
-    msgBox.style.display = "block"; 
+    msgBox.style.display = "block";
     msgBox.textContent = "⌛ Procesando y resguardando ficha clínica en la red médica...";
     msgBox.className = "msg-box info";
 
@@ -35,20 +35,34 @@ document.getElementById('formIngreso').addEventListener('submit', async (e) => {
     };
 
     try {
-    const response = await fetch('/api/pacientes', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(pacienteData)
-    });
+        const response = await fetch('/api/pacientes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pacienteData)
+        });
 
-    const resultado = await response.json();
+        const resultado = await response.json();
 
-    if(response.ok){
-        console.log(resultado);
+        if (response.ok) {
+            msgBox.className = "msg-box success";
+            msgBox.textContent = "✅ Ficha registrada exitosamente.";
+
+            console.log(resultado);
+
+            document.getElementById('formIngreso').reset();
+        } else {
+            msgBox.className = "msg-box error";
+            msgBox.textContent = `❌ ${resultado.error || 'Error al registrar la ficha.'}`;
+
+            console.error(resultado);
+        }
+
+    } catch (error) {
+        console.error(error);
+
+        msgBox.className = "msg-box error";
+        msgBox.textContent = "❌ No fue posible conectar con el servidor.";
     }
-
-} catch(error){
-    console.error(error);
-}
+});
