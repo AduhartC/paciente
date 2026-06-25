@@ -34,36 +34,21 @@ document.getElementById('formIngreso').addEventListener('submit', async (e) => {
         otros: document.getElementById('ing-otros').value.trim()
     };
 
-     try {
-        // URL ABSOLUTA CORREGIDA: Apunta directo a tu servidor en internet sin adivinar
-        const urlServer = 'https://onrender.com';
+    try {
+    const response = await fetch('/api/pacientes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pacienteData)
+    });
 
-        const response = await fetch(urlServer, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(pacienteData)
-        });
+    const resultado = await response.json();
 
-        const resultado = await response.json();
-
-        if (response.ok) {
-            msgBox.textContent = `✅ ¡Operación Exitosa! La ficha oncológica del paciente ${pacienteData.nombre} ha sido registrada correctamente en MongoDB Atlas.`;
-            msgBox.className = "msg-box success";
-            document.getElementById('formIngreso').reset();
-            
-            setTimeout(() => {
-                msgBox.style.display = "none";
-            }, 7000);
-        } else {
-            msgBox.textContent = `❌ Error de Validación: ${resultado.message || 'No se pudo procesar el alta.'}`;
-            msgBox.className = "msg-box error";
-        }
-
-    } catch (error) {
-        console.error("Error de red detectado:", error);
-        msgBox.textContent = "🚨 Error del Sistema: No se pudo establecer comunicación con el servidor central de RedSalud. Verifique su conexión.";
-        msgBox.className = "msg-box error";
+    if(response.ok){
+        console.log(resultado);
     }
-});
+
+} catch(error){
+    console.error(error);
+}
