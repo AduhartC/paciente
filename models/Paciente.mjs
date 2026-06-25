@@ -108,7 +108,45 @@ const PacienteSchema = new mongoose.Schema({
         trim: true, 
         default: "" 
     }
-}, {
+}, 
+
+const pacienteData = {
+    nombre: document.getElementById('ing-nombre').value.trim(),
+    rut: document.getElementById('ing-rut').value.trim(),
+
+    edad: document.getElementById('ing-edad').value
+        ? Number(document.getElementById('ing-edad').value)
+        : undefined,
+
+    ficha: document.getElementById('ing-ficha').value.trim(),
+    fechaNacimiento: document.getElementById('ing-fecha-nacimiento').value,
+    fechaIngreso: document.getElementById('ing-fecha-ingreso').value,
+
+    diagnostico: document.getElementById('ing-diagnostico').value.trim(),
+
+    cirugiasPrevias: document.getElementById('ing-cirugias').value.trim(),
+    biopsiasPrevias: document.getElementById('ing-biopsias').value.trim(),
+    qtRtPrevia: document.getElementById('ing-qt-rt').value.trim(),
+
+    presentadoComite: seleccionadoComite ? seleccionadoComite.value : "No",
+
+    fechasEstudios: {
+        tac: document.getElementById('ing-fecha-tac').value || null,
+        petCt: document.getElementById('ing-fecha-pet').value || null,
+        rnmCerebro: document.getElementById('ing-fecha-rnm').value || null
+    },
+
+    evaluaciones: {
+        dlco: document.getElementById('ing-dlco').value,
+        espirometria: document.getElementById('ing-espirometria').value,
+        ecocardio: document.getElementById('ing-ecocardio').value
+    },
+
+    especialidadPaseQx: document.getElementById('ing-pase-qx').value.trim() || null,
+    otros: document.getElementById('ing-otros').value.trim()
+};
+
+{
     // Crea automáticamente los campos createdAt y updatedAt para cada registro en Atlas
     timestamps: true 
 });
