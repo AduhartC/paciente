@@ -257,3 +257,17 @@ td {
     font-weight: bold; 
     font-size: 11px; 
 }
+
+.logo-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+.logo-menu img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
