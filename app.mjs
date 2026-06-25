@@ -1,23 +1,22 @@
-// app.mjs - ASEGÚRATE DE QUE ESTAS DOS LÍNEAS ESTÉN AL PRINCIPIO DE TODO:
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import rutasPacientes from './routes/pacientes.mjs';
 
-// Inicializamos Express
+// 1. Inicializar variables de entorno
+dotenv.config();
+
+// 2. Inicializar Express
 const app = express();
-dotenv.config(); // Carga el archivo .env local si existe
 
-// Middleware obligatorio para que el servidor entienda datos en formato JSON
-app.use(express.json());
-// 🔥 AÑADE ESTA LÍNEA AQUÍ PARA SERVIR TU CARPETA PUBLIC:
-app.use(express.static('public'));
+// 3. Configuración de Middlewares (ORDEN ESTRICTO)
+app.use(cors()); 
+app.use(express.json()); // Primero habilitamos la lectura de JSON
+app.use(express.static('public')); // Luego servimos la carpeta pública
 
+// 4. Conexión a MongoDB Atlas
 console.log('⏳ Conectando a MongoDB Atlas...');
-// 🔌 CONEXIÓN A MONGO DB ATLAS
-// Node.js leerá automáticamente la variable MONGO_URI desde tu archivo .env
-console.log('⏳ Conectando a MongoDB Atlas...');
-
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB conectado exitosamente a la base de datos de pacientes.');
@@ -27,21 +26,16 @@ mongoose.connect(process.env.MONGO_URI)
     console.error(err.message);
   });
 
-// 📊 RUTAS DEL MENÚ CRUD
-// Todos los endpoints de pacientes empezarán con /api/pacientes
+// 5. Rutas de la API
 app.use('/api/pacientes', rutasPacientes);
 
-// Ruta de prueba inicial en el navegador
-app.get('/', (req, res) => {
-  res.send('🚀 Servidor de control de pacientes activo y corriendo.');
+// Ruta base alternativa para chequear estado
+app.get('/status', (req, res) => {
+  res.json({ status: "online", message: "Servidor médico RedSalud activo." });
 });
 
-
-
-
-// Render inyectará el puerto correcto automáticamente aquí
+// 6. Levantar Servidor
 const PORT = process.env.PORT || 3000; 
-
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor médico corriendo exitosamente en el puerto ${PORT}`);
 });
