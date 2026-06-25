@@ -10,13 +10,19 @@
 <body>
 
     <!-- Menú de Pestañas Navigation -->
-    <div class="navbar">
-        <a onclick="switchTab('tab-ingreso')" id="btn-tab-ingreso" class="tab-activa">Ingreso</a>
-        <a onclick="switchTab('tab-editar')" id="btn-tab-editar">Editar</a>
-        <a onclick="switchTab('tab-consulta')" id="btn-tab-consulta">Consulta</a>
-        <a onclick="switchTab('tab-eliminar')" id="btn-tab-eliminar">Eliminar</a>
-        <a onclick="switchTab('tab-fecha')" id="btn-tab-fecha">Fecha Examen</a>
-    </div>
+   <div class="navbar">
+
+<a href="index.html">Ingreso</a>
+
+<a href="editar.html">Editar</a>
+
+<a href="consulta.html">Consulta</a>
+
+<a href="eliminar.html">Eliminar</a>
+
+<a href="fecha.html">Fecha Examen</a>
+
+</div>
 
 <div class="logo-menu">
     <i class="fa-solid fa-hospital"></i>
@@ -145,42 +151,35 @@
         <!-- Contenedor dinámico de respuestas de red -->
         <div id="ing-msg" class="msg-box"></div>
     </div>
+<!-- SECCIÓN 1: EDITAR -->
 
+<div id="tab-editar" class="container">
 
-<!--editar.html (o sección nueva)-->
-<div id="tab-editar" class="container" style="display:none">
+<h2>✏️ Editar Ficha Oncológica</h2>
 
-    <h2>✏️ Editar Paciente</h2>
+<div class="search-box">
 
-    <input id="buscar-rut" placeholder="Buscar por RUT" />
-    <button id="btnBuscar">Buscar</button>
+    <input
+        type="text"
+        id="buscarPaciente"
+        placeholder="Ingrese RUT o Nombre">
 
-    <hr />
+    <button
+        type="button"
+        id="btnBuscarPaciente"
+        class="btn-secondary">
+        Buscar
+    </button>
 
-    <form id="formEditar" style="display:none">
+</div>
 
-        <label>Nombre</label>
-        <input id="edit-nombre" disabled />
+<div id="edit-msg" class="msg-box"></div>
 
-        <label>RUT</label>
-        <input id="edit-rut" disabled />
+<form id="formEditar" class="grid-form" style="display:none">
 
-        <label>Edad</label>
-        <input id="edit-edad" type="number" />
+    <!-- aquí irá exactamente la misma ficha de Ingreso -->
 
-        <label>Ficha</label>
-        <input id="edit-ficha" />
-
-        <label>Fecha Nacimiento</label>
-        <input id="edit-fechaNacimiento" type="date" />
-
-        <label>Diagnóstico</label>
-        <input id="edit-diagnostico" />
-
-        <button type="submit">💾 Guardar cambios</button>
-    </form>
-
-    <div id="edit-msg"></div>
+</form>
 
 </div>
 
