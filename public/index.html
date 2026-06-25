@@ -34,6 +34,66 @@
     </div>
 
 
+<div class="container" style="display:block">
+
+<h2>Editar Paciente</h2>
+
+<div class="search-box">
+
+<input
+id="buscar"
+placeholder="Ingrese RUT o Nombre">
+
+<button id="btnBuscar">
+
+Buscar
+
+</button>
+
+</div>
+
+<form id="formEditar" style="display:none">
+
+<label>Nombre</label>
+
+<input id="edit-nombre" disabled>
+
+<label>RUT</label>
+
+<input id="edit-rut" disabled>
+
+<label>Edad</label>
+
+<input id="edit-edad">
+
+<label>Ficha</label>
+
+<input id="edit-ficha">
+
+<label>Fecha nacimiento</label>
+
+<input type="date"
+id="edit-fechaNacimiento">
+
+<label>Diagnóstico</label>
+
+<textarea id="edit-diagnostico"></textarea>
+
+<button
+class="btn-primary"
+type="submit">
+
+Guardar cambios
+
+</button>
+
+</form>
+
+</div>
+
+<script src="editar.js"></script>
+
+
     <!-- SECCIÓN 1: INGRESO -->
     <div id="tab-ingreso" class="container tab-activa">
         <h2>📋 Ficha Oncológica e Historial Pre-Quirúrgico</h2>
