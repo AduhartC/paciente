@@ -15,6 +15,12 @@ app.use(express.static('public'));
 
 // 📦 ROUTES
 app.use('/api/pacientes', rutasPacientes);
+app.use(express.static('public', {
+    etag: false,
+    setHeaders: (res) => {
+        res.setHeader('Cache-Control', 'no-store');
+    }
+}));
 
 // 🟢 HEALTHCHECK
 app.get('/api/health', (req, res) => {
