@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Editar Paciente</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>Editar Paciente</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
 <div class="navbar">
@@ -17,154 +16,34 @@
 
 <div class="container" style="display:block">
 
-<h2>🔎 Editar Ficha Clínica</h2>
+    <h2>✏️ Editar Ficha Clínica</h2>
 
-<!-- BUSQUEDA -->
-<div class="search-box">
-    <input id="buscar" placeholder="Buscar por RUT o Nombre">
-    <button id="btnBuscar">Buscar</button>
-</div>
+    <!-- BÚSQUEDA -->
+    <div class="search-box">
+        <input id="buscar" placeholder="Buscar por RUT o Nombre">
+        <button id="btnBuscar">Buscar</button>
+    </div>
 
-<hr>
+    <!-- RESULTADOS DE BÚSQUEDA -->
+    <div id="resultados"></div>
 
-<form id="formEditar" class="grid-form" style="display:none">
-<div class="search-box">
-    <input type="text" id="buscar" placeholder="Ingrese RUT o Nombre">
-    <button type="button" id="btnBuscar" class="btn-secondary">Buscar</button>
-</div>
+    <hr>
 
-<!-- ✅ Agregar esto -->
-<div id="resultados"></div>
+    <!-- FORMULARIO -->
+    <form id="formEditar" class="grid-form" style="display:none">
 
-<form id="formEditar" class="grid-form" style="display:none">
-    ...
-</form>
-<!-- IDENTIFICACIÓN -->
-<div>
-<label>Nombre</label>
-<input id="edit-nombre">
-</div>
+        <div><label>Nombre</label><input id="edit-nombre"></div>
+        <div><label>RUT</label><input id="edit-rut"></div>
+        <div><label>Edad</label><input id="edit-edad" type="number"></div>
+        <div><label>Ficha</label><input id="edit-ficha"></div>
+        <div><label>Fecha nacimiento</label><input id="edit-fechaNacimiento" type="date"></div>
 
-<div>
-<label>RUT</label>
-<input id="edit-rut">
-</div>
+        <div class="full-width"><label>Diagnóstico</label><textarea id="edit-diagnostico"></textarea></div>
+        <div class="full-width"><label>Cirugías Previas</label><textarea id="edit-cirugiasPrevias"></textarea></div>
+        <div class="full-width"><label>Biopsias Previas</label><textarea id="edit-biopsiasPrevias"></textarea></div>
+        <div class="full-width"><label>QT / RT</label><textarea id="edit-qtRtPrevia"></textarea></div>
 
-<div>
-<label>Edad</label>
-<input id="edit-edad" type="number">
-</div>
-
-<div>
-<label>Ficha</label>
-<input id="edit-ficha">
-</div>
-
-<div>
-<label>Fecha nacimiento</label>
-<input id="edit-fechaNacimiento" type="date">
-</div>
-
-<div>
-<label>Fecha ingreso</label>
-<input id="edit-fechaIngreso" type="date">
-</div>
-
-<!-- DIAGNOSTICO -->
-<div class="full-width">
-<label>Diagnóstico</label>
-<textarea id="edit-diagnostico"></textarea>
-</div>
-
-<div class="full-width">
-<label>Cirugías Previas</label>
-<textarea id="edit-cirugias"></textarea>
-</div>
-
-<div class="full-width">
-<label>Biopsias Previas</label>
-<textarea id="edit-biopsias"></textarea>
-</div>
-
-<div class="full-width">
-<label>QT / RT</label>
-<textarea id="edit-qt-rt"></textarea>
-</div>
-
-<!-- COMITE -->
-<div class="full-width">
-<label>Comité Oncológico</label>
-<select id="edit-comite">
-<option value="Sí">Sí</option>
-<option value="No">No</option>
-</select>
-</div>
-
-<!-- ESTUDIOS -->
-<div>
-<label>TAC</label>
-<input type="date" id="edit-tac">
-</div>
-
-<div>
-<label>PET CT</label>
-<input type="date" id="edit-pet">
-</div>
-
-<div>
-<label>RNM Cerebro</label>
-<input type="date" id="edit-rnm">
-</div>
-
-<!-- FUNCIONALES -->
-<div>
-<label>DLCO</label>
-<select id="edit-dlco">
-<option>Listo</option>
-<option>Pendiente</option>
-<option>No necesario</option>
-</select>
-</div>
-
-<div>
-<label>Espirometría</label>
-<select id="edit-espirometria">
-<option>Listo</option>
-<option>Pendiente</option>
-<option>No necesario</option>
-</select>
-</div>
-
-<div>
-<label>Ecocardio</label>
-<select id="edit-ecocardio">
-<option>Listo</option>
-<option>Pendiente</option>
-<option>No necesario</option>
-</select>
-</div>
-
-<!-- OTROS -->
-<div class="full-width">
-<label>Pase Qx</label>
-<input id="edit-paseqx">
-</div>
-
-<div class="full-width">
-<label>Otros</label>
-<textarea id="edit-otros"></textarea>
-</div>
-
-<div class="full-width">
-<button type="submit" class="btn-primary">
-Guardar cambios
-</button>
-</div>
-
-</form>
-
-</div>
-
-<script src="editar.js?v=2"></script>
-</body>
-</html>
+        <div class="full-width">
+            <label>Comité Oncológico</label>
+            <div class="options">
+                <label><input type="radio"
