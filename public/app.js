@@ -74,3 +74,50 @@ document.getElementById('formIngreso')?.addEventListener('submit', async (e) => 
         msgBox.textContent = "❌ Error de conexión";
     }
 });
+
+
+// ─── Guardar edición ──────────────────────────────────────────────────────────
+document.getElementById("formEditar")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!pacienteId) return showError("No hay paciente seleccionado");
+
+  const msgBox = document.getElementById("edit-msg"); // agrega este div en tu HTML
+  const btn    = e.target.querySelector("button[type=submit]");
+
+  const payload = {
+    edad:            document.getElementById("edit-edad")?.value
+                       ? Number(document.getElementById("edit-edad").value)
+                       : null,
+    ficha:           document.getElementById("edit-ficha")?.value?.trim()        || "",
+    diagnostico:     document.getElementById("edit-diagnostico")?.value?.trim()  || "",
+    fechaNacimiento: document.getElementById("edit-fechaNacimiento")?.value
+                       ? new Date(document.getElementById("edit-fechaNacimiento").value)
+                       : null,
+  };
+
+  btn.disabled    = true;
+  btn.textContent = "Guardando…";
+
+  try {
+    const res  = await fetch(`/api/pacientes/${pacienteId}`, {
+      method:  "PUT",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || "Error al guardar");
+
+    msgBox.className   = "msg-box success";
+    msgBox.textContent = "✅ Cambios guardados correctamente.";
+
+  } catch (err) {
+    msgBox.className   = "msg-box error";
+    msgBox.textContent = `❌ ${err.message}`;
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = "Guardar";
+  }
+});
