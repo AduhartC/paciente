@@ -1,4 +1,5 @@
 document.getElementById('formIngreso').addEventListener('submit', async (e) => {
+    console.log('ENTRO AL SUBMIT');
     e.preventDefault();
 
     const msgBox = document.getElementById('ing-msg');
