@@ -78,46 +78,119 @@ document.getElementById('formIngreso')?.addEventListener('submit', async (e) => 
 
 // ─── Guardar edición ──────────────────────────────────────────────────────────
 document.getElementById("formEditar")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    if (!pacienteId) return showError("No hay paciente seleccionado");
 
-  if (!pacienteId) return showError("No hay paciente seleccionado");
+    const msgBox = document.getElementById("edit-msg");
+    const btn    = e.target.querySelector("button[type=submit]");
 
-  const msgBox = document.getElementById("edit-msg"); // agrega este div en tu HTML
-  const btn    = e.target.querySelector("button[type=submit]");
+    const payload = {
+        edad:            document.getElementById("edit-edad").value
+                           ? Number(document.getElementById("edit-edad").value) : null,
+        ficha:           document.getElementById("edit-ficha").value.trim(),
+        diagnostico:     document.getElementById("edit-diagnostico").value.trim(),
+        cirugiasPrevias: document.getElementById("edit-cirugiasPrevias").value.trim(),
+        biopsiasPrevias: document.getElementById("edit-biopsiasPrevias").value.trim(),
+        qtRtPrevia:      document.getElementById("edit-qtRtPrevia").value.trim(),
+        presentadoComite: document.querySelector('input[name="edit-comite"]:checked')?.value ?? "No",
+        especialidadPaseQx: document.getElementById("edit-pase-qx").value.trim() || null,
+        otros:           document.getElementById("edit-otros").value.trim(),
 
-  const payload = {
-    edad:            document.getElementById("edit-edad")?.value
-                       ? Number(document.getElementById("edit-edad").value)
-                       : null,
-    ficha:           document.getElementById("edit-ficha")?.value?.trim()        || "",
-    diagnostico:     document.getElementById("edit-diagnostico")?.value?.trim()  || "",
-    fechaNacimiento: document.getElementById("edit-fechaNacimiento")?.value
-                       ? new Date(document.getElementById("edit-fechaNacimiento").value)
-                       : null,
-  };
+        fechaNacimiento: document.getElementById("edit-fechaNacimiento").value
+                           ? new Date(document.getElementById("edit-fechaNacimiento").value) : null,
 
-  btn.disabled    = true;
-  btn.textContent = "Guardando…";
+        fechasEstudios: {
+            tac:        document.getElementById("edit-fecha-tac").value
+                          ? new Date(document.getElementById("edit-fecha-tac").value) : null,
+            petCt:      document.getElementById("edit-fecha-pet").value
+                          ? new Date(document.getElementById("edit-fecha-pet").value) : null,
+            rnmCerebro: document.getElementById("edit-fecha-rnm").value
+                          ? new Date(document.getElementById("edit-fecha-rnm").value) : null,
+        },
 
-  try {
-    const res  = await fetch(`/api/pacientes/${pacienteId}`, {
-      method:  "PUT",
-      headers: { "Content-Type": "application/json" },
-      body:    JSON.stringify(payload),
-    });
+        evaluaciones: {
+            dlco:         document.getElementById("edit-dlco").value,
+            espirometria: document.getElementById("edit-espirometria").value,
+            ecocardio:    document.getElementById("edit-ecocardio").value,
+        },
+    };
 
-    const data = await res.json();
+    btn.disabled    = true;
+    btn.textContent = "Guardando…";
 
-    if (!res.ok) throw new Error(data.message || "Error al guardar");
+    try {
+        const res  = await fetch(`/api/pacientes/${pacienteId}`, {
+            method:  "PUT",
+            headers: { "Content-Type": "application/json" },
+            body:    JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Error al guardar");
 
-    msgBox.className   = "msg-box success";
-    msgBox.textContent = "✅ Cambios guardados correctamente.";
-
-  } catch (err) {
-    msgBox.className   = "msg-box error";
-    msgBox.textContent = `❌ ${err.message}`;
-  } finally {
-    btn.disabled    = false;
-    btn.textContent = "Guardar";
-  }
+        msgBox.className   = "msg-box success";
+        msgBox.textContent = "✅ Cambios guardados correctamente.";
+    } catch (err) {
+        msgBox.className   = "msg-box error";
+        msgBox.textContent = `❌ ${err.message}`;
+    } finally {
+        btn.disabled    = false;
+        btn.textContent = "Guardar Cambios";
+    }
 });
+
+function cargarPaciente(p) {
+    pacienteId = p._id;
+    clearResultados();
+
+    // Bloqueados
+    setValue("edit-nombre",  p.nombre, true);
+    setValue("edit-rut",     p.rut,    true);
+
+    // Editables simples
+    setValue("edit-edad",            p.edad            ?? "");
+    setValue("edit-ficha",           p.ficha           ?? "");
+    setValue("edit-diagnostico",     p.diagnostico     ?? "");
+    setValue("edit-cirugiasPrevias", p.cirugiasPrevias ?? "");
+    setValue("edit-biopsiasPrevias", p.biopsiasPrevias ?? "");
+    setValue("edit-qtRtPrevia",      p.qtRtPrevia      ?? "");
+    setValue("edit-pase-qx",         p.especialidadPaseQx ?? "");
+    setValue("edit-otros",           p.otros           ?? "");
+
+    // Fechas
+    setDate("edit-fechaNacimiento", p.fechaNacimiento);
+    setDate("edit-fecha-tac",       p.fechasEstudios?.tac);
+    setDate("edit-fecha-pet",       p.fechasEstudios?.petCt);
+    setDate("edit-fecha-rnm",       p.fechasEstudios?.rnmCerebro);
+
+    // Selects
+    setSelect("edit-dlco",         p.evaluaciones?.dlco);
+    setSelect("edit-espirometria", p.evaluaciones?.espirometria);
+    setSelect("edit-ecocardio",    p.evaluaciones?.ecocardio);
+
+    // Radio comité
+    const comiteVal = p.presentadoComite ?? "No";
+    const radio = document.querySelector(`input[name="edit-comite"][value="${comiteVal}"]`);
+    if (radio) radio.checked = true;
+
+    document.getElementById("formEditar").style.display = "block";
+}
+
+// ─── Helpers de poblado ───────────────────────────────────────────────────────
+function setValue(id, value, disabled = false) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value    = value;
+    el.disabled = disabled;
+}
+
+function setDate(id, raw) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = raw ? new Date(raw).toISOString().split("T")[0] : "";
+}
+
+function setSelect(id, value) {
+    const el = document.getElementById(id);
+    if (!el || !value) return;
+    el.value = value;
+}
