@@ -35,7 +35,7 @@ document.getElementById('formIngreso').addEventListener('submit', async (e) => {
     };
 
        try {
-        // DETECCIÓN DINÁMICA: Detecta si estás probando en tu PC o en la nube de Render
+        // DETECCIÓN DINÁMICA: Asegúrate de que el subdominio apunte a TU proyecto específico
         const urlServer = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'http://localhost:3000/api/pacientes' 
             : 'https://onrender.com'; // URL Real Corregida
@@ -47,7 +47,6 @@ document.getElementById('formIngreso').addEventListener('submit', async (e) => {
             },
             body: JSON.stringify(pacienteData)
         });
-
         const resultado = await response.json();
 
 
