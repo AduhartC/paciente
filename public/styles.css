@@ -9,10 +9,13 @@ body {
 /* Barra de Menú Corporativa RedSalud */
 /* Barra de Menú RedSalud (Ajustada según imagen) */
 .navbar { 
-    background-color: #007a87; /* Verde Azulado Principal */
+    background-color: #007a87;
     display: flex; 
     justify-content: center; 
-    padding: 14px 0; 
+    align-items: center;
+    flex-wrap: wrap;   /* 🔥 CLAVE: permite salto de línea */
+    gap: 8px;
+    padding: 10px 10px; 
     box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
     position: sticky; 
     top: 0; 
@@ -270,4 +273,26 @@ td {
     width: 35px;
     height: 35px;
     object-fit: contain;
+}
+
+@media (max-width: 600px) {
+
+    .navbar {
+        justify-content: flex-start; /* mejor alineación en móvil */
+        overflow-x: auto;            /* scroll horizontal suave */
+        flex-wrap: nowrap;           /* evita que se aplaste */
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .navbar a {
+        flex: 0 0 auto;
+        font-size: 13px;
+        padding: 8px 14px;
+    }
+
+    .logo-menu {
+        flex: 0 0 auto;
+        margin-right: 10px;
+    }
 }
