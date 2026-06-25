@@ -103,14 +103,10 @@ router.get('/buscar', async (req, res) => {
             ]
         });
 
-        if (pacientes.length === 0) {
-            return res.status(404).json({ message: "Paciente no encontrado" });
-        }
-
-        res.json(pacientes);
+        return res.json(Array.isArray(pacientes) ? pacientes : []);
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Error al buscar paciente",
             error: error.message
         });
