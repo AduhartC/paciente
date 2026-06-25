@@ -3,7 +3,7 @@ import Paciente from '../models/Paciente.mjs';
 
 const router = express.Router();
 
-// 🟢 CREAR PACIENTE COMPLETO (según schema real)
+// 🟢 CREATE
 router.post('/', async (req, res) => {
   try {
     const {
@@ -23,17 +23,15 @@ router.post('/', async (req, res) => {
       evaluaciones
     } = req.body;
 
-    // 🔴 VALIDACIÓN SEGÚN SCHEMA (obligatorios reales)
     if (!rut || !ficha || !nombre || !edad || !fechaNacimiento || !diagnostico) {
       return res.status(400).json({
-        message: "Faltan campos obligatorios del paciente"
+        message: "Faltan campos obligatorios"
       });
     }
 
     const cleanRut = String(rut).trim();
     const cleanFicha = String(ficha).trim();
 
-    // 🔍 duplicados
     const existe = await Paciente.findOne({
       $or: [{ rut: cleanRut }, { ficha: cleanFicha }]
     });
@@ -44,12 +42,11 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // 🟢 CREACIÓN COMPLETA SEGÚN SCHEMA
     const nuevoPaciente = new Paciente({
       rut: cleanRut,
       ficha: cleanFicha,
       nombre: String(nombre).trim(),
-      edad,
+      edad: Number(edad),
       fechaNacimiento,
       diagnostico,
       presentadoComite: presentadoComite || "No",
@@ -76,28 +73,36 @@ router.post('/', async (req, res) => {
 
     const saved = await nuevoPaciente.save();
 
-    return res.status(201).json({
+    res.status(201).json({
       message: "Paciente creado correctamente",
       data: saved
     });
 
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: "Error interno del servidor",
+    res.status(500).json({
+      message: "Error interno",
       error: error.message
     });
   }
 });
 
+
+// 🟢 SEARCH (ROBUSTO)
 router.get('/buscar', async (req, res) => {
     try {
-        const { rut, nombre } = req.query;
+
+        const { buscar } = req.query;
+
+        if (!buscar) {
+            return res.status(400).json({ message: "Falta parámetro de búsqueda" });
+        }
+
+        const clean = String(buscar).trim();
 
         const paciente = await Paciente.findOne({
             $or: [
-                { rut: rut || null },
-                { nombre: nombre || null }
+                { rut: clean },
+                { nombre: new RegExp(clean, 'i') }
             ]
         });
 
@@ -116,35 +121,52 @@ router.get('/buscar', async (req, res) => {
 });
 
 
+// 🟢 UPDATE SEGURO
 router.patch('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        // ❌ proteger campos críticos
-        delete req.body.rut;
-        delete req.body.nombre;
+    // ❌ proteger campos críticos
+    delete req.body.rut;
+    delete req.body.nombre;
 
-        const actualizado = await Paciente.findByIdAndUpdate(
-            id,
-            req.body,
-            { new: true, runValidators: true }
-        );
+    // 🔒 asegurar edad válida si viene
+    if (req.body.edad !== undefined) {
+      req.body.edad = Number(req.body.edad);
 
-        if (!actualizado) {
-            return res.status(404).json({ message: "Paciente no encontrado" });
-        }
-
-        res.json({
-            message: "Paciente actualizado correctamente",
-            data: actualizado
+      if (req.body.edad < 0 || req.body.edad > 120) {
+        return res.status(400).json({
+          message: "Edad fuera de rango"
         });
-
-    } catch (error) {
-        res.status(500).json({
-            message: "Error al actualizar paciente",
-            error: error.message
-        });
+      }
     }
+
+    const actualizado = await Paciente.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    if (!actualizado) {
+      return res.status(404).json({
+        message: "Paciente no encontrado"
+      });
+    }
+
+    res.json({
+      message: "Paciente actualizado correctamente",
+      data: actualizado
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al actualizar",
+      error: error.message
+    });
+  }
 });
 
 export default router;
