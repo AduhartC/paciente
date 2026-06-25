@@ -120,7 +120,7 @@ document.getElementById("formEditar")?.addEventListener("submit", async (e) => {
 
     try {
         const res  = await fetch(`/api/pacientes/${pacienteId}`, {
-            method:  "PUT",
+            method:  "PATCH",
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify(payload),
         });
