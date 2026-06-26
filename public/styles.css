@@ -14,7 +14,7 @@ body {
     justify-content: center; 
     align-items: center;
     flex-wrap: wrap;   /* 🔥 CLAVE: permite salto de línea */
-    gap: 8px;
+    gap: 18px;
     padding: 10px 10px; 
     box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
     position: sticky; 
