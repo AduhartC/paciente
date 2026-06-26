@@ -2,87 +2,83 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Paciente</title>
+    <title>Ingreso Paciente</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="navbar">
-    <a href="index.html">Ingreso</a>
-    <a href="editar.html" class="tab-activa">Editar</a>
+    <a href="index.html" class="tab-activa">Ingreso</a>
+    <a href="editar.html">Editar</a>
     <a href="consulta.html">Consulta</a>
     <a href="eliminar.html">Eliminar</a>
 </div>
 
 <div class="container" style="display:block">
 
-    <h2>✏️ Editar Ficha Clínica</h2>
+    <h2>📋 Ficha Oncológica e Historial Pre-Quirúrgico</h2>
 
-    <!-- BÚSQUEDA -->
-    <div class="search-box">
-        <input id="buscar" placeholder="Buscar por RUT o Nombre">
-        <button id="btnBuscar">Buscar</button>
-    </div>
+    <form id="formIngreso" class="grid-form">
 
-    <!-- RESULTADOS DE BÚSQUEDA -->
-    <div id="resultados"></div>
+        <div><label>Nombre Paciente:</label><input type="text" id="ing-nombre" required></div>
+        <div><label>RUT:</label><input type="text" id="ing-rut" required></div>
+        <div><label>Edad:</label><input type="number" id="ing-edad" min="0" max="120" required></div>
+        <div><label>N° Ficha Clínica:</label><input type="text" id="ing-ficha" required></div>
+        <div><label>Fecha de Nacimiento:</label><input type="date" id="ing-fecha-nacimiento" required></div>
+        <div><label>Fecha de Registro:</label><input type="date" id="ing-fecha-ingreso" required></div>
 
-    <hr>
-
-    <!-- FORMULARIO -->
-    <form id="formEditar" class="grid-form" style="display:none">
-
-        <div><label>Nombre</label><input id="edit-nombre"></div>
-        <div><label>RUT</label><input id="edit-rut"></div>
-        <div><label>Edad</label><input id="edit-edad" type="number"></div>
-        <div><label>Ficha</label><input id="edit-ficha"></div>
-        <div><label>Fecha nacimiento</label><input id="edit-fechaNacimiento" type="date"></div>
-
-        <div class="full-width"><label>Diagnóstico</label><textarea id="edit-diagnostico"></textarea></div>
-        <div class="full-width"><label>Cirugías Previas</label><textarea id="edit-cirugiasPrevias"></textarea></div>
-        <div class="full-width"><label>Biopsias Previas</label><textarea id="edit-biopsiasPrevias"></textarea></div>
-        <div class="full-width"><label>QT / RT</label><textarea id="edit-qtRtPrevia"></textarea></div>
+        <div class="full-width"><label>Diagnóstico Principal:</label><textarea id="ing-diagnostico" required></textarea></div>
+        <div class="full-width"><label>Cirugías Previas:</label><textarea id="ing-cirugias"></textarea></div>
+        <div class="full-width"><label>Biopsias Previas:</label><textarea id="ing-biopsias"></textarea></div>
+        <div class="full-width"><label>Qt o Rt Previa:</label><textarea id="ing-qt-rt"></textarea></div>
 
         <div class="full-width">
-            <label>Comité Oncológico</label>
+            <label>Presentado a Comité Oncológico:</label>
             <div class="options">
-                <label><input type="radio" name="edit-comite" value="Sí"> Sí</label>
-                <label><input type="radio" name="edit-comite" value="No"> No</label>
+                <label><input type="radio" name="ing-comite" value="Sí" required> Sí</label>
+                <label><input type="radio" name="ing-comite" value="No"> No</label>
             </div>
         </div>
 
-        <div><label>TAC</label><input type="date" id="edit-fecha-tac"></div>
-        <div><label>PET CT</label><input type="date" id="edit-fecha-pet"></div>
-        <div><label>RNM Cerebro</label><input type="date" id="edit-fecha-rnm"></div>
+        <div><label>Último TAC:</label><input type="date" id="ing-fecha-tac"></div>
+        <div><label>Último PET CT:</label><input type="date" id="ing-fecha-pet"></div>
+        <div class="full-width"><label>Última RNM Cerebro:</label><input type="date" id="ing-fecha-rnm"></div>
 
-        <div><label>DLCO</label>
-            <select id="edit-dlco">
-                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+        <div><label>DLCO:</label>
+            <select id="ing-dlco">
+                <option value="Listo">Listo</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="No necesario">No necesario</option>
             </select>
         </div>
-        <div><label>Espirometría</label>
-            <select id="edit-espirometria">
-                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+        <div><label>Espirometría:</label>
+            <select id="ing-espirometria">
+                <option value="Listo">Listo</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="No necesario">No necesario</option>
             </select>
         </div>
-        <div><label>Ecocardio</label>
-            <select id="edit-ecocardio">
-                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+        <div class="full-width"><label>Ecocardio:</label>
+            <select id="ing-ecocardio">
+                <option value="Listo">Listo</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="No necesario">No necesario</option>
             </select>
         </div>
 
-        <div class="full-width"><label>Pase Qx</label><input id="edit-pase-qx"></div>
-        <div class="full-width"><label>Otros</label><textarea id="edit-otros"></textarea></div>
+        <div class="full-width"><label>Especialidad Pase Qx:</label><input type="text" id="ing-pase-qx"></div>
+        <div class="full-width"><label>Otros / Observaciones:</label><textarea id="ing-otros"></textarea></div>
 
         <div class="full-width">
-            <div id="edit-msg" class="msg-box"></div>
-            <button type="submit" class="btn-primary">Guardar cambios</button>
+            <button type="submit" class="btn-primary">Registrar Ficha Oncológica</button>
         </div>
 
     </form>
 
+    <div id="ing-msg" class="msg-box"></div>
+
 </div>
 
-<script src="editar.js?v=3"></script>
+<script src="app.js"></script>
 </body>
 </html>
