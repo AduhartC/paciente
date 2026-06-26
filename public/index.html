@@ -2,309 +2,87 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión de Pacientes Oncológicos</title>
-    <!-- Vinculación del archivo CSS externo -->
+    <title>Editar Paciente</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Menú de Pestañas Navigation -->
-   <div class="navbar">
-
-<a href="index.html">Ingreso</a>
-
-<a href="editar.html">Editar</a>
-
-<a href="consulta.html">Consulta</a>
-
-<a href="eliminar.html">Eliminar</a>
-
-<a href="fecha.html">Fecha Examen</a>
-
+<div class="navbar">
+    <a href="index.html">Ingreso</a>
+    <a href="editar.html" class="tab-activa">Editar</a>
+    <a href="consulta.html">Consulta</a>
+    <a href="eliminar.html">Eliminar</a>
 </div>
 
-<div class="logo-menu">
-    <i class="fa-solid fa-hospital"></i>
-    Sistema Pacientes
-</div>
-  
+<div class="container" style="display:block">
 
+    <h2>✏️ Editar Ficha Clínica</h2>
 
-    <!-- SECCIÓN 1: INGRESO -->
-    <div id="tab-ingreso" class="container tab-activa">
-        <h2>📋 Ficha Oncológica e Historial Pre-Quirúrgico</h2>
-        <form id="formIngreso" class="grid-form">
-            
-            <!-- Identificación Básica -->
-            <div>
-                <label>Nombre Paciente:</label>
-                <input type="text" id="ing-nombre" placeholder="Juan Pérez" required>
-            </div>
-            <div>
-                <label>RUT:</label>
-                <input type="text" id="ing-rut" placeholder="12345678-9" required>
-            </div>
-            <div>
-                <label>Edad:</label>
-                <input type="number" id="ing-edad" min="0" max="120" placeholder="65" required>
-            </div>
-            <div>
-                <label>N° Ficha Clínica:</label>
-                <input type="text" id="ing-ficha" placeholder="FC-99824" required>
-            </div>
-            <div>
-                <label>Fecha de Nacimiento:</label>
-                <input type="date" id="ing-fecha-nacimiento" required>
-            </div>
-            <div>
-                <label>Fecha de Registro:</label>
-                <input type="date" id="ing-fecha-ingreso" required>
-            </div>
-
-            <!-- Historial Diagnóstico y Tratamiento -->
-            <div class="full-width">
-                <label>Diagnóstico Principal:</label>
-                <textarea id="ing-diagnostico" placeholder="Adenocarcinoma de pulmón estadio III..." required></textarea>
-            </div>
-            <div class="full-width">
-                <label>Cirugías Previas:</label>
-                <textarea id="ing-cirugias" placeholder="Laparoscopía exploratoria (2022)..."></textarea>
-            </div>
-            <div class="full-width">
-                <label>Biopsias Previas:</label>
-                <textarea id="ing-biopsias" placeholder="Biopsia core ganglionar..."></textarea>
-            </div>
-            <div class="full-width">
-                <label>Qt o Rt Previa (Ciclos y Fechas):</label>
-                <textarea id="ing-qt-rt" placeholder="4 Ciclos Cisplatino finalizados en Enero 2026..."></textarea>
-            </div>
-
-            <!-- Evaluación de Comité -->
-            <div class="full-width radio-group">
-                <label>Presentado a Comité Oncológico:</label>
-                <div class="options">
-                    <label><input type="radio" name="ing-comite" value="Sí" required> Sí</label>
-                    <label><input type="radio" name="ing-comite" value="No"> No</label>
-                </div>
-            </div>
-
-            <!-- Seguimiento Imagenológico -->
-            <div>
-                <label>Último TAC (Fecha):</label>
-                <input type="date" id="ing-fecha-tac">
-            </div>
-            <div>
-                <label>Último PET CT (Fecha):</label>
-                <input type="date" id="ing-fecha-pet">
-            </div>
-            <div class="full-width">
-                <label>Última RNM Cerebro (Fecha):</label>
-                <input type="date" id="ing-fecha-rnm">
-            </div>
-
-            <!-- Pruebas Funcionales Fisiológicas -->
-            <div>
-                <label>DLCO:</label>
-                <select id="ing-dlco" required>
-                    <option value="Listo">Listo</option>
-                    <option value="Pendiente" selected>Pendiente</option>
-                    <option value="No necesario">No necesario</option>
-                </select>
-            </div>
-            <div>
-                <label>Espirometría:</label>
-                <select id="ing-espirometria" required>
-                    <option value="Listo">Listo</option>
-                    <option value="Pendiente" selected>Pendiente</option>
-                    <option value="No necesario">No necesario</option>
-                </select>
-            </div>
-            <div class="full-width">
-                <label>Ecocardio:</label>
-                <select id="ing-ecocardio" required>
-                    <option value="Listo">Listo</option>
-                    <option value="Pendiente" selected>Pendiente</option>
-                    <option value="No necesario">No necesario</option>
-                </select>
-            </div>
-
-            <!-- Requerimientos Quirúrgicos y Adicionales -->
-            <div class="full-width">
-                <label>¿De qué especialidad requiere pase Qx? (Sólo si es necesario):</label>
-                <input type="text" id="ing-pase-qx" placeholder="Cardiología, Neumología, etc.">
-            </div>
-            <div class="full-width">
-                <label>Otros Antecedentes / Observaciones:</label>
-                <textarea id="ing-otros" placeholder="Alergias medicamentosas, soporte familiar..."></textarea>
-            </div>
-
-            <!-- Envío -->
-            <div class="full-width">
-                <button type="submit" class="btn-primary">Registrar Ficha Oncológica</button>
-            </div>
-        </form>
-        
-        <!-- Contenedor dinámico de respuestas de red -->
-        <div id="ing-msg" class="msg-box"></div>
-    </div>
-<!-- SECCIÓN 1: EDITAR -->
-
-<div id="tab-editar" class="container">
-
-<h2>✏️ Editar Ficha Oncológica</h2>
-
-<div class="search-box">
-
-    <input
-        type="text"
-        id="buscarPaciente"
-        placeholder="Ingrese RUT o Nombre">
-
-    <button
-        type="button"
-        id="btnBuscarPaciente"
-        class="btn-secondary">
-        Buscar
-    </button>
-
-</div>
-
-
-
-<form id="formEditar" class="grid-form" style="display:none">
-
-    <!-- Bloqueados -->
-    <div>
-        <label>Nombre Paciente:</label>
-        <input type="text" id="edit-nombre" disabled>
-    </div>
-    <div>
-        <label>RUT:</label>
-        <input type="text" id="edit-rut" disabled>
+    <!-- BÚSQUEDA -->
+    <div class="search-box">
+        <input id="buscar" placeholder="Buscar por RUT o Nombre">
+        <button id="btnBuscar">Buscar</button>
     </div>
 
-    <!-- Editables -->
-    <div>
-        <label>Edad:</label>
-        <input type="number" id="edit-edad" min="0" max="120">
-    </div>
-    <div>
-        <label>N° Ficha Clínica:</label>
-        <input type="text" id="edit-ficha">
-    </div>
-    <div>
-        <label>Fecha de Nacimiento:</label>
-        <input type="date" id="edit-fechaNacimiento">
-    </div>
+    <!-- RESULTADOS DE BÚSQUEDA -->
+    <div id="resultados"></div>
 
-    <div class="full-width">
-        <label>Diagnóstico Principal:</label>
-        <textarea id="edit-diagnostico"></textarea>
-    </div>
-    <div class="full-width">
-        <label>Cirugías Previas:</label>
-        <textarea id="edit-cirugiasPrevias"></textarea>
-    </div>
-    <div class="full-width">
-        <label>Biopsias Previas:</label>
-        <textarea id="edit-biopsiasPrevias"></textarea>
-    </div>
-    <div class="full-width">
-        <label>Qt o Rt Previa:</label>
-        <textarea id="edit-qtRtPrevia"></textarea>
-    </div>
+    <hr>
 
-    <div class="full-width radio-group">
-        <label>Presentado a Comité Oncológico:</label>
-        <div class="options">
-            <label><input type="radio" name="edit-comite" value="Sí"> Sí</label>
-            <label><input type="radio" name="edit-comite" value="No"> No</label>
+    <!-- FORMULARIO -->
+    <form id="formEditar" class="grid-form" style="display:none">
+
+        <div><label>Nombre</label><input id="edit-nombre"></div>
+        <div><label>RUT</label><input id="edit-rut"></div>
+        <div><label>Edad</label><input id="edit-edad" type="number"></div>
+        <div><label>Ficha</label><input id="edit-ficha"></div>
+        <div><label>Fecha nacimiento</label><input id="edit-fechaNacimiento" type="date"></div>
+
+        <div class="full-width"><label>Diagnóstico</label><textarea id="edit-diagnostico"></textarea></div>
+        <div class="full-width"><label>Cirugías Previas</label><textarea id="edit-cirugiasPrevias"></textarea></div>
+        <div class="full-width"><label>Biopsias Previas</label><textarea id="edit-biopsiasPrevias"></textarea></div>
+        <div class="full-width"><label>QT / RT</label><textarea id="edit-qtRtPrevia"></textarea></div>
+
+        <div class="full-width">
+            <label>Comité Oncológico</label>
+            <div class="options">
+                <label><input type="radio" name="edit-comite" value="Sí"> Sí</label>
+                <label><input type="radio" name="edit-comite" value="No"> No</label>
+            </div>
         </div>
-    </div>
 
-    <div>
-        <label>Último TAC (Fecha):</label>
-        <input type="date" id="edit-fecha-tac">
-    </div>
-    <div>
-        <label>Último PET CT (Fecha):</label>
-        <input type="date" id="edit-fecha-pet">
-    </div>
-    <div class="full-width">
-        <label>Última RNM Cerebro (Fecha):</label>
-        <input type="date" id="edit-fecha-rnm">
-    </div>
+        <div><label>TAC</label><input type="date" id="edit-fecha-tac"></div>
+        <div><label>PET CT</label><input type="date" id="edit-fecha-pet"></div>
+        <div><label>RNM Cerebro</label><input type="date" id="edit-fecha-rnm"></div>
 
-    <div>
-        <label>DLCO:</label>
-        <select id="edit-dlco">
-            <option value="Listo">Listo</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="No necesario">No necesario</option>
-        </select>
-    </div>
-    <div>
-        <label>Espirometría:</label>
-        <select id="edit-espirometria">
-            <option value="Listo">Listo</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="No necesario">No necesario</option>
-        </select>
-    </div>
-    <div class="full-width">
-        <label>Ecocardio:</label>
-        <select id="edit-ecocardio">
-            <option value="Listo">Listo</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="No necesario">No necesario</option>
-        </select>
-    </div>
+        <div><label>DLCO</label>
+            <select id="edit-dlco">
+                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+            </select>
+        </div>
+        <div><label>Espirometría</label>
+            <select id="edit-espirometria">
+                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+            </select>
+        </div>
+        <div><label>Ecocardio</label>
+            <select id="edit-ecocardio">
+                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+            </select>
+        </div>
 
-    <div class="full-width">
-        <label>¿Pase Qx? (Especialidad):</label>
-        <input type="text" id="edit-pase-qx">
-    </div>
-    <div class="full-width">
-        <label>Otros Antecedentes / Observaciones:</label>
-        <textarea id="edit-otros"></textarea>
-    </div>
+        <div class="full-width"><label>Pase Qx</label><input id="edit-pase-qx"></div>
+        <div class="full-width"><label>Otros</label><textarea id="edit-otros"></textarea></div>
 
-    <!-- Feedback y submit — SIEMPRE al final -->
-    <div class="full-width">
-        <div id="edit-msg" class="msg-box"></div>
-        <button type="submit" class="btn-primary">Guardar Cambios</button>
-    </div>
+        <div class="full-width">
+            <div id="edit-msg" class="msg-box"></div>
+            <button type="submit" class="btn-primary">Guardar cambios</button>
+        </div>
 
-</form>
+    </form>
 
 </div>
 
-
-
-
-
-    <!-- Scripts de Control -->
-    <script>
-        // Función básica para alternar la visualización de pestañas en el frontend
-        function switchTab(tabId) {
-            // Ocultar todos los contenedores con clase container
-            document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
-            // Remover estado activo de los botones de navegación
-            document.querySelectorAll('.navbar a').forEach(el => el.classList.remove('tab-activa'));
-            
-            // Mostrar la pestaña seleccionada
-            const target = document.getElementById(tabId);
-            if(target) target.style.display = 'block';
-            
-            // Iluminar el botón activo
-            const btn = document.getElementById('btn-' + tabId);
-            if(btn) btn.classList.add('tab-activa');
-        }
-        
-        // Inicializar mostrando la primera pestaña por defecto al cargar la página
-        switchTab('tab-ingreso');
-    </script>
-    <script src="app.js?v=4"></script>
+<script src="editar.js?v=3"></script>
 </body>
 </html>
