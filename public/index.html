@@ -44,27 +44,53 @@
         <div><label>Último PET CT:</label><input type="date" id="ing-fecha-pet"></div>
         <div class="full-width"><label>Última RNM Cerebro:</label><input type="date" id="ing-fecha-rnm"></div>
 
-        <div><label>DLCO:</label>
+       <!-- DLCO -->
+<div class="full-width examen-group">
+    <label>DLCO</label>
+    <div class="examen-row">
+        <div><label>Estado</label>
             <select id="ing-dlco">
                 <option value="Listo">Listo</option>
                 <option value="Pendiente" selected>Pendiente</option>
                 <option value="No necesario">No necesario</option>
             </select>
         </div>
-        <div><label>Espirometría:</label>
+        <div><label>Fecha Solicitud</label><input type="date" id="ing-dlco-solicitud"></div>
+        <div><label>Fecha Realizado</label><input type="date" id="ing-dlco-realizado"></div>
+    </div>
+</div>
+
+<!-- Espirometría -->
+<div class="full-width examen-group">
+    <label>Espirometría</label>
+    <div class="examen-row">
+        <div><label>Estado</label>
             <select id="ing-espirometria">
                 <option value="Listo">Listo</option>
                 <option value="Pendiente" selected>Pendiente</option>
                 <option value="No necesario">No necesario</option>
             </select>
         </div>
-        <div class="full-width"><label>Ecocardio:</label>
+        <div><label>Fecha Solicitud</label><input type="date" id="ing-espirometria-solicitud"></div>
+        <div><label>Fecha Realizado</label><input type="date" id="ing-espirometria-realizado"></div>
+    </div>
+</div>
+
+<!-- Ecocardio -->
+<div class="full-width examen-group">
+    <label>Ecocardio</label>
+    <div class="examen-row">
+        <div><label>Estado</label>
             <select id="ing-ecocardio">
                 <option value="Listo">Listo</option>
                 <option value="Pendiente" selected>Pendiente</option>
                 <option value="No necesario">No necesario</option>
             </select>
         </div>
+        <div><label>Fecha Solicitud</label><input type="date" id="ing-ecocardio-solicitud"></div>
+        <div><label>Fecha Realizado</label><input type="date" id="ing-ecocardio-realizado"></div>
+    </div>
+</div>
 
         <div class="full-width"><label>Especialidad Pase Qx:</label><input type="text" id="ing-pase-qx"></div>
         <div class="full-width"><label>Otros / Observaciones:</label><textarea id="ing-otros"></textarea></div>

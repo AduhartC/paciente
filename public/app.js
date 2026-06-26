@@ -45,7 +45,26 @@ document.getElementById('formIngreso')?.addEventListener('submit', async (e) => 
             espirometria: document.getElementById('ing-espirometria')?.value || "Pendiente",
             ecocardio: document.getElementById('ing-ecocardio')?.value || "Pendiente"
         },
-
+examenes: {
+    dlco: {
+        fechaSolicitud: document.getElementById("ing-dlco-solicitud").value
+                          ? new Date(document.getElementById("ing-dlco-solicitud").value) : null,
+        fechaRealizado: document.getElementById("ing-dlco-realizado").value
+                          ? new Date(document.getElementById("ing-dlco-realizado").value) : null,
+    },
+    espirometria: {
+        fechaSolicitud: document.getElementById("ing-espirometria-solicitud").value
+                          ? new Date(document.getElementById("ing-espirometria-solicitud").value) : null,
+        fechaRealizado: document.getElementById("ing-espirometria-realizado").value
+                          ? new Date(document.getElementById("ing-espirometria-realizado").value) : null,
+    },
+    ecocardio: {
+        fechaSolicitud: document.getElementById("ing-ecocardio-solicitud").value
+                          ? new Date(document.getElementById("ing-ecocardio-solicitud").value) : null,
+        fechaRealizado: document.getElementById("ing-ecocardio-realizado").value
+                          ? new Date(document.getElementById("ing-ecocardio-realizado").value) : null,
+    },
+},
         especialidadPaseQx: document.getElementById('ing-pase-qx')?.value?.trim() || null,
         otros: document.getElementById('ing-otros')?.value?.trim() || ""
     };
