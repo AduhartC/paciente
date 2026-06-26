@@ -75,7 +75,7 @@ especialidadPaseQx:{
 
 
 },
-        especialidadPaseQx: document.getElementById('ing-pase-qx')?.value?.trim() || null,
+        
         otros: document.getElementById('ing-otros')?.value?.trim() || ""
     };
 
