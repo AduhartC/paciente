@@ -174,4 +174,5 @@ router.get('/examenes-pendientes', async (req, res) => {
 
     res.json(resultado);
 });
+
 export default router;
