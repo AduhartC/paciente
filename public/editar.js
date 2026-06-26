@@ -122,6 +122,15 @@ document.getElementById("formEditar").addEventListener("submit", async (e) => {
             fechaRealizado: document.getElementById("edit-ecocardio-realizado").value
                               ? new Date(document.getElementById("edit-ecocardio-realizado").value) : null,
         },
+
+        especialidadPaseQx:{
+        fechaSolicitud: document.getElementById("ing-pase-qx-solicitud").value
+                          ? new Date(document.getElementById("ing-pase-qx-solicitud").value) : null,
+        fechaRealizado: document.getElementById("ing-pase-qx-realizado").value
+                          ? new Date(document.getElementById("ing-pase-qx-realizado").value) : null,
+
+
+}
     },
 };
 
