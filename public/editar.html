@@ -55,21 +55,74 @@
         <div><label>PET CT</label><input type="date" id="edit-fecha-pet"></div>
         <div><label>RNM Cerebro</label><input type="date" id="edit-fecha-rnm"></div>
 
-        <div><label>DLCO</label>
+       <!-- DLCO -->
+<div class="full-width examen-group">
+    <label>DLCO</label>
+    <div class="examen-row">
+        <div>
+            <label>Estado</label>
             <select id="edit-dlco">
-                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+                <option>Listo</option>
+                <option>Pendiente</option>
+                <option>No necesario</option>
             </select>
         </div>
-        <div><label>Espirometría</label>
+        <div>
+            <label>Fecha Solicitud</label>
+            <input type="date" id="edit-dlco-solicitud">
+        </div>
+        <div>
+            <label>Fecha Realizado</label>
+            <input type="date" id="edit-dlco-realizado">
+        </div>
+    </div>
+</div>
+
+<!-- Espirometría -->
+<div class="full-width examen-group">
+    <label>Espirometría</label>
+    <div class="examen-row">
+        <div>
+            <label>Estado</label>
             <select id="edit-espirometria">
-                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+                <option>Listo</option>
+                <option>Pendiente</option>
+                <option>No necesario</option>
             </select>
         </div>
-        <div><label>Ecocardio</label>
+        <div>
+            <label>Fecha Solicitud</label>
+            <input type="date" id="edit-espirometria-solicitud">
+        </div>
+        <div>
+            <label>Fecha Realizado</label>
+            <input type="date" id="edit-espirometria-realizado">
+        </div>
+    </div>
+</div>
+
+<!-- Ecocardio -->
+<div class="full-width examen-group">
+    <label>Ecocardio</label>
+    <div class="examen-row">
+        <div>
+            <label>Estado</label>
             <select id="edit-ecocardio">
-                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+                <option>Listo</option>
+                <option>Pendiente</option>
+                <option>No necesario</option>
             </select>
         </div>
+        <div>
+            <label>Fecha Solicitud</label>
+            <input type="date" id="edit-ecocardio-solicitud">
+        </div>
+        <div>
+            <label>Fecha Realizado</label>
+            <input type="date" id="edit-ecocardio-realizado">
+        </div>
+    </div>
+</div>
 
         <div class="full-width"><label>Pase Qx</label><input id="edit-pase-qx"></div>
         <div class="full-width"><label>Otros</label><textarea id="edit-otros"></textarea></div>
