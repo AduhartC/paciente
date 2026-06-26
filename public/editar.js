@@ -51,6 +51,14 @@ function cargarPaciente(p) {
     setSelect("edit-espirometria", p.evaluaciones?.espirometria);
     setSelect("edit-ecocardio",    p.evaluaciones?.ecocardio);
 
+    // Examenes
+setDate("edit-dlco-solicitud",          p.examenes?.dlco?.fechaSolicitud);
+setDate("edit-dlco-realizado",          p.examenes?.dlco?.fechaRealizado);
+setDate("edit-espirometria-solicitud",  p.examenes?.espirometria?.fechaSolicitud);
+setDate("edit-espirometria-realizado",  p.examenes?.espirometria?.fechaRealizado);
+setDate("edit-ecocardio-solicitud",     p.examenes?.ecocardio?.fechaSolicitud);
+setDate("edit-ecocardio-realizado",     p.examenes?.ecocardio?.fechaRealizado);
+
     const radio = document.querySelector(
         `input[name="edit-comite"][value="${p.presentadoComite ?? "No"}"]`
     );
@@ -68,33 +76,55 @@ document.getElementById("formEditar").addEventListener("submit", async (e) => {
     const msgBox = document.getElementById("edit-msg");
     const btn    = e.target.querySelector("button[type=submit]");
 
-    const payload = {
-        edad:            document.getElementById("edit-edad").value
-                           ? Number(document.getElementById("edit-edad").value) : null,
-        ficha:           document.getElementById("edit-ficha").value.trim(),
-        diagnostico:     document.getElementById("edit-diagnostico").value.trim(),
-        cirugiasPrevias: document.getElementById("edit-cirugiasPrevias").value.trim(),
-        biopsiasPrevias: document.getElementById("edit-biopsiasPrevias").value.trim(),
-        qtRtPrevia:      document.getElementById("edit-qtRtPrevia").value.trim(),
-        presentadoComite: document.querySelector('input[name="edit-comite"]:checked')?.value ?? "No",
-        especialidadPaseQx: document.getElementById("edit-pase-qx").value.trim() || null,
-        otros:           document.getElementById("edit-otros").value.trim(),
-        fechaNacimiento: document.getElementById("edit-fechaNacimiento").value
-                           ? new Date(document.getElementById("edit-fechaNacimiento").value) : null,
-        fechasEstudios: {
-            tac:        document.getElementById("edit-fecha-tac").value
-                          ? new Date(document.getElementById("edit-fecha-tac").value) : null,
-            petCt:      document.getElementById("edit-fecha-pet").value
-                          ? new Date(document.getElementById("edit-fecha-pet").value) : null,
-            rnmCerebro: document.getElementById("edit-fecha-rnm").value
-                          ? new Date(document.getElementById("edit-fecha-rnm").value) : null,
+   const payload = {
+    edad:            document.getElementById("edit-edad").value
+                       ? Number(document.getElementById("edit-edad").value) : null,
+    ficha:           document.getElementById("edit-ficha").value.trim(),
+    diagnostico:     document.getElementById("edit-diagnostico").value.trim(),
+    cirugiasPrevias: document.getElementById("edit-cirugiasPrevias").value.trim(),
+    biopsiasPrevias: document.getElementById("edit-biopsiasPrevias").value.trim(),
+    qtRtPrevia:      document.getElementById("edit-qtRtPrevia").value.trim(),
+    presentadoComite: document.querySelector('input[name="edit-comite"]:checked')?.value ?? "No",
+    especialidadPaseQx: document.getElementById("edit-pase-qx").value.trim() || null,
+    otros:           document.getElementById("edit-otros").value.trim(),
+    fechaNacimiento: document.getElementById("edit-fechaNacimiento").value
+                       ? new Date(document.getElementById("edit-fechaNacimiento").value) : null,
+    fechasEstudios: {
+        tac:        document.getElementById("edit-fecha-tac").value
+                      ? new Date(document.getElementById("edit-fecha-tac").value) : null,
+        petCt:      document.getElementById("edit-fecha-pet").value
+                      ? new Date(document.getElementById("edit-fecha-pet").value) : null,
+        rnmCerebro: document.getElementById("edit-fecha-rnm").value
+                      ? new Date(document.getElementById("edit-fecha-rnm").value) : null,
+    },
+    evaluaciones: {
+        dlco:         document.getElementById("edit-dlco").value,
+        espirometria: document.getElementById("edit-espirometria").value,
+        ecocardio:    document.getElementById("edit-ecocardio").value,
+    },
+    // ✅ AQUÍ va el bloque de examenes
+    examenes: {
+        dlco: {
+            fechaSolicitud: document.getElementById("edit-dlco-solicitud").value
+                              ? new Date(document.getElementById("edit-dlco-solicitud").value) : null,
+            fechaRealizado: document.getElementById("edit-dlco-realizado").value
+                              ? new Date(document.getElementById("edit-dlco-realizado").value) : null,
         },
-        evaluaciones: {
-            dlco:         document.getElementById("edit-dlco").value,
-            espirometria: document.getElementById("edit-espirometria").value,
-            ecocardio:    document.getElementById("edit-ecocardio").value,
+        espirometria: {
+            fechaSolicitud: document.getElementById("edit-espirometria-solicitud").value
+                              ? new Date(document.getElementById("edit-espirometria-solicitud").value) : null,
+            fechaRealizado: document.getElementById("edit-espirometria-realizado").value
+                              ? new Date(document.getElementById("edit-espirometria-realizado").value) : null,
         },
-    };
+        ecocardio: {
+            fechaSolicitud: document.getElementById("edit-ecocardio-solicitud").value
+                              ? new Date(document.getElementById("edit-ecocardio-solicitud").value) : null,
+            fechaRealizado: document.getElementById("edit-ecocardio-realizado").value
+                              ? new Date(document.getElementById("edit-ecocardio-realizado").value) : null,
+        },
+    },
+};
+
 
     btn.disabled    = true;
     btn.textContent = "Guardando…";

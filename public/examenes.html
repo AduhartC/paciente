@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Exámenes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="index.html">Ingreso</a>
+    <a href="editar.html">Editar</a>
+    <a href="consulta.html">Consulta</a>
+    <a href="eliminar.html">Eliminar</a>
+    <a href="examenes.html" class="tab-activa">Exámenes</a>
+</div>
+
+<div class="container" style="display:block">
+    <h2>🔬 Control de Exámenes Pendientes</h2>
+
+    <div id="resumen" style="margin-bottom:15px; font-weight:bold;"></div>
+
+    <table id="tablaExamenes">
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>RUT</th>
+                <th>Examen</th>
+                <th>Fecha Solicitud</th>
+                <th>Días transcurridos</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            <tr><td colspan="6" style="text-align:center">Cargando...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+async function cargarExamenes() {
+    const res  = await fetch('/api/pacientes/examenes-pendientes');
+    const data = await res.json();
+    const tbody = document.getElementById("cuerpoTabla");
+    const resumen = document.getElementById("resumen");
+
+    if (!data.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">✅ No hay exámenes pendientes</td></tr>';
+        return;
+    }
+
+    const atrasados = data.filter(e => e.atrasado).length;
+    resumen.innerHTML = `Total pendientes: <span style="color:#c53030">${atrasados} atrasados</span> / ${data.length} en seguimiento`;
+
+    tbody.innerHTML = data.map(e => `
+        <tr class="${e.atrasado ? 'row-expired' : ''}">
+            <td>${e.paciente}</td>
+            <td>${e.rut}</td>
+            <td>${e.examen}</td>
+            <td>${new Date(e.fechaSolicitud).toLocaleDateString('es-CL')}</td>
+            <td>${e.dias} días</td>
+            <td>${e.atrasado
+                ? '<span class="badge-expired">🔴 Atrasado</span>'
+                : '<span style="color:green">🟢 Al día</span>'
+            }</td>
+        </tr>
+    `).join('');
+}
+
+cargarExamenes();
+</script>
+</body>
+</html>

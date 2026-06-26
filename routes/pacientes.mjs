@@ -149,5 +149,29 @@ router.patch('/:id', async (req, res) => {
         });
     }
 });
+// GET /api/pacientes/examenes-pendientes
+router.get('/examenes-pendientes', async (req, res) => {
+    const pacientes = await Paciente.find({});
+    const hoy = new Date();
+    const resultado = [];
 
+    pacientes.forEach(p => {
+        ['dlco', 'espirometria', 'ecocardio'].forEach(examen => {
+            const e = p.examenes?.[examen];
+            if (!e?.fechaSolicitud || e?.fechaRealizado) return;
+
+            const dias = Math.floor((hoy - new Date(e.fechaSolicitud)) / 86400000);
+            resultado.push({
+                paciente: p.nombre,
+                rut: p.rut,
+                examen,
+                fechaSolicitud: e.fechaSolicitud,
+                dias,
+                atrasado: dias >= 7
+            });
+        });
+    });
+
+    res.json(resultado);
+});
 export default router;
