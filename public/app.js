@@ -64,6 +64,16 @@ examenes: {
         fechaRealizado: document.getElementById("ing-ecocardio-realizado").value
                           ? new Date(document.getElementById("ing-ecocardio-realizado").value) : null,
     },
+especialidadPaseQx:{
+        fechaSolicitud: document.getElementById("ing-pase-qx-solicitud").value
+                          ? new Date(document.getElementById("ing-pase-qx-solicitud").value) : null,
+        fechaRealizado: document.getElementById("ing-pase-qx-realizado").value
+                          ? new Date(document.getElementById("ing-pase-qx-realizado").value) : null,
+
+
+}
+
+
 },
         especialidadPaseQx: document.getElementById('ing-pase-qx')?.value?.trim() || null,
         otros: document.getElementById('ing-otros')?.value?.trim() || ""
