@@ -46,4 +46,43 @@
         <div class="full-width">
             <label>Comité Oncológico</label>
             <div class="options">
-                <label><input type="radio"
+                <label><input type="radio" name="edit-comite" value="Sí"> Sí</label>
+                <label><input type="radio" name="edit-comite" value="No"> No</label>
+            </div>
+        </div>
+
+        <div><label>TAC</label><input type="date" id="edit-fecha-tac"></div>
+        <div><label>PET CT</label><input type="date" id="edit-fecha-pet"></div>
+        <div><label>RNM Cerebro</label><input type="date" id="edit-fecha-rnm"></div>
+
+        <div><label>DLCO</label>
+            <select id="edit-dlco">
+                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+            </select>
+        </div>
+        <div><label>Espirometría</label>
+            <select id="edit-espirometria">
+                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+            </select>
+        </div>
+        <div><label>Ecocardio</label>
+            <select id="edit-ecocardio">
+                <option>Listo</option><option>Pendiente</option><option>No necesario</option>
+            </select>
+        </div>
+
+        <div class="full-width"><label>Pase Qx</label><input id="edit-pase-qx"></div>
+        <div class="full-width"><label>Otros</label><textarea id="edit-otros"></textarea></div>
+
+        <div class="full-width">
+            <div id="edit-msg" class="msg-box"></div>
+            <button type="submit" class="btn-primary">Guardar cambios</button>
+        </div>
+
+    </form>
+
+</div>
+
+<script src="editar.js?v=3"></script>
+</body>
+</html>
