@@ -202,6 +202,8 @@ function cargarPaciente(p) {
     if (radio) radio.checked = true;
 
     document.getElementById("formEditar").style.display = "block";
+    document.getElementById('edit-fechaNacimiento').value = paciente.fechaNacimiento;
+calcularEdad(); // ← recalcula al cargar
 }
 
 // ─── Helpers de poblado ───────────────────────────────────────────────────────

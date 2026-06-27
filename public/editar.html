@@ -31,14 +31,33 @@
 
     <hr>
 
-    <!-- FORMULARIO -->
-    <form id="formEditar" class="grid-form" style="display:none">
+   <!-- FORMULARIO -->
+<form id="formEditar" class="grid-form" style="display:none">
 
-        <div><label>Nombre</label><input id="edit-nombre"></div>
-        <div><label>RUT</label><input id="edit-rut"></div>
-        <div><label>Edad</label><input id="edit-edad" type="number"></div>
-        <div><label>Ficha</label><input id="edit-ficha"></div>
-        <div><label>Fecha nacimiento</label><input id="edit-fechaNacimiento" type="date"></div>
+    <div class="form-group">
+        <label>Nombre</label>
+        <input id="edit-nombre">
+    </div>
+
+    <div class="form-group">
+        <label>RUT</label>
+        <input id="edit-rut">
+    </div>
+
+    <div class="form-group">
+        <label>Fecha nacimiento</label>
+        <input id="edit-fechaNacimiento" type="date" onchange="calcularEdad()">
+    </div>
+
+    <div class="form-group">
+        <label>Edad</label>
+        <input id="edit-edad" type="number" readonly style="background:#f0f0f0; cursor:not-allowed;">
+    </div>
+
+    <div class="form-group">
+        <label>Ficha</label>
+        <input id="edit-ficha">
+    </div>
 
         <div class="full-width"><label>Diagnóstico</label><textarea id="edit-diagnostico"></textarea></div>
         <div class="full-width"><label>Cirugías Previas</label><textarea id="edit-cirugiasPrevias"></textarea></div>
