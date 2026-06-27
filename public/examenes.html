@@ -53,8 +53,11 @@ async function cargarExamenes() {
     const atrasados = data.filter(e => e.atrasado).length;
     resumen.innerHTML = `Total pendientes: <span style="color:#c53030">${atrasados} atrasados</span> / ${data.length} en seguimiento`;
 
-    tbody.innerHTML = data.map(e => `
-        <tr class="${e.atrasado ? 'row-expired' : ''}">
+    tbody.innerHTML = data
+    .sort((a, b) => b.dias - a.dias)  // ← más antiguo primero
+    .map(e => `
+        
+            <tr class="${e.atrasado ? 'row-expired' : ''}">
             <td>${e.paciente}</td>
             <td>${e.rut}</td>
             <td>${e.examen}</td>
