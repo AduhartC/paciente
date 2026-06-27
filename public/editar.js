@@ -58,6 +58,10 @@ setDate("edit-espirometria-solicitud",  p.examenes?.espirometria?.fechaSolicitud
 setDate("edit-espirometria-realizado",  p.examenes?.espirometria?.fechaRealizado);
 setDate("edit-ecocardio-solicitud",     p.examenes?.ecocardio?.fechaSolicitud);
 setDate("edit-ecocardio-realizado",     p.examenes?.ecocardio?.fechaRealizado);
+// Después de los setDate de ecocardio
+setDate("ing-pase-qx-solicitud", p.examenes?.especialidadPaseQx?.fechaSolicitud);
+setDate("ing-pase-qx-realizado", p.examenes?.especialidadPaseQx?.fechaRealizado);
+setSelect("ing-pase-qx",         p.evaluaciones?.especialidadPaseQx);
 
     const radio = document.querySelector(
         `input[name="edit-comite"][value="${p.presentadoComite ?? "No"}"]`
@@ -123,14 +127,12 @@ document.getElementById("formEditar").addEventListener("submit", async (e) => {
                               ? new Date(document.getElementById("edit-ecocardio-realizado").value) : null,
         },
 
-        especialidadPaseQx:{
-        fechaSolicitud: document.getElementById("ing-pase-qx-solicitud").value
-                          ? new Date(document.getElementById("ing-pase-qx-solicitud").value) : null,
-        fechaRealizado: document.getElementById("ing-pase-qx-realizado").value
-                          ? new Date(document.getElementById("ing-pase-qx-realizado").value) : null,
-
-
-}
+         especialidadPaseQx: {
+            fechaSolicitud: document.getElementById("ing-pase-qx-solicitud")?.value
+                      ? new Date(document.getElementById("ing-pase-qx-solicitud").value) : null,
+            fechaRealizado: document.getElementById("ing-pase-qx-realizado")?.value
+                      ? new Date(document.getElementById("ing-pase-qx-realizado").value) : null,
+        },
     },
 };
 
