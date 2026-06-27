@@ -89,7 +89,7 @@ document.getElementById("formEditar").addEventListener("submit", async (e) => {
     biopsiasPrevias: document.getElementById("edit-biopsiasPrevias").value.trim(),
     qtRtPrevia:      document.getElementById("edit-qtRtPrevia").value.trim(),
     presentadoComite: document.querySelector('input[name="edit-comite"]:checked')?.value ?? "No",
-    especialidadPaseQx: document.getElementById("edit-pase-qx").value.trim() || null,
+    especialidadPaseQx: document.getElementById("ing-pase-qx")?.value.trim() || null,
     otros:           document.getElementById("edit-otros").value.trim(),
     fechaNacimiento: document.getElementById("edit-fechaNacimiento").value
                        ? new Date(document.getElementById("edit-fechaNacimiento").value) : null,
