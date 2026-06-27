@@ -56,7 +56,8 @@ const PacienteSchema = new mongoose.Schema(
     evaluaciones: {
         dlco:        { type: String, enum: ['Listo', 'Pendiente', 'No necesario'], default: 'Pendiente' },
         espirometria:{ type: String, enum: ['Listo', 'Pendiente', 'No necesario'], default: 'Pendiente' },
-        ecocardio:   { type: String, enum: ['Listo', 'Pendiente', 'No necesario'], default: 'Pendiente' }
+        ecocardio:   { type: String, enum: ['Listo', 'Pendiente', 'No necesario'], default: 'Pendiente' },
+        especialidadPaseQx: { type: String, enum: ['Listo', 'Pendiente', 'No necesario'], default: 'Pendiente' }
     },
     examenes: {
         dlco:        { fechaSolicitud: { type: Date, default: null }, fechaRealizado: { type: Date, default: null } },

@@ -105,6 +105,7 @@ document.getElementById("formEditar").addEventListener("submit", async (e) => {
         dlco:         document.getElementById("edit-dlco").value,
         espirometria: document.getElementById("edit-espirometria").value,
         ecocardio:    document.getElementById("edit-ecocardio").value,
+        especialidadPaseQx: document.getElementById("ing-pase-qx").value,
     },
     // ✅ AQUÍ va el bloque de examenes
     examenes: {
