@@ -220,6 +220,7 @@ button {
     background: #edf2f7; 
     padding: 15px; 
     border-radius: 6px; 
+     max-width: 100px; /* Ajusta este valor a tu gusto */
 }
 
 /* Alertas y Bloques de Respuesta de Red */
