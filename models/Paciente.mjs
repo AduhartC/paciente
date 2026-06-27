@@ -61,9 +61,10 @@ const PacienteSchema = new mongoose.Schema(
     examenes: {
         dlco:        { fechaSolicitud: { type: Date, default: null }, fechaRealizado: { type: Date, default: null } },
         espirometria:{ fechaSolicitud: { type: Date, default: null }, fechaRealizado: { type: Date, default: null } },
-        ecocardio:   { fechaSolicitud: { type: Date, default: null }, fechaRealizado: { type: Date, default: null } }
+        ecocardio:   { fechaSolicitud: { type: Date, default: null }, fechaRealizado: { type: Date, default: null } },
+        especialidadPaseQx: { fechaSolicitud: { type: Date, default: null }, fechaRealizado: { type: Date, default: null } }
     },
-    especialidadPaseQx: { type: String, trim: true, default: null },
+   
     otros:              { type: String, trim: true, default: "" }
 },
 { timestamps: true }
