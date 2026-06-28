@@ -388,7 +388,7 @@ td {
 
 .navbar-logo {
     margin-left: auto;  /* ← empuja el logo a la derecha */
-    height: 30px;
+    height: 40px;
     width: auto;
     border-radius: 50%; /* opcional, lo hace circular */
 }
