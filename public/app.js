@@ -15,6 +15,8 @@ document.getElementById('formIngreso')?.addEventListener('submit', async (e) => 
     const pacienteData = {
         nombre: document.getElementById('ing-nombre')?.value?.trim(),
         rut: document.getElementById('ing-rut')?.value?.trim(),
+        telefono: document.getElementById('ing-telefono')?.value?.trim() || "",
+        correo:   document.getElementById('ing-correo')?.value?.trim() || "",
         edad: edadValue ? Number(edadValue) : null,
         ficha: document.getElementById('ing-ficha')?.value?.trim(),
 
@@ -116,6 +118,8 @@ document.getElementById("formEditar")?.addEventListener("submit", async (e) => {
     const payload = {
         edad:            document.getElementById("edit-edad").value
                            ? Number(document.getElementById("edit-edad").value) : null,
+        telefono: document.getElementById('edit-telefono').value.trim(),
+        correo:   document.getElementById('edit-correo').value.trim(),             
         ficha:           document.getElementById("edit-ficha").value.trim(),
         diagnostico:     document.getElementById("edit-diagnostico").value.trim(),
         cirugiasPrevias: document.getElementById("edit-cirugiasPrevias").value.trim(),
@@ -177,6 +181,8 @@ function cargarPaciente(p) {
 
     // Editables simples
     setValue("edit-edad",            p.edad            ?? "");
+    setValue("edit-telefono", p.telefono ?? "");
+    setValue("edit-correo",   p.correo   ?? "");
     setValue("edit-ficha",           p.ficha           ?? "");
     setValue("edit-diagnostico",     p.diagnostico     ?? "");
     setValue("edit-cirugiasPrevias", p.cirugiasPrevias ?? "");

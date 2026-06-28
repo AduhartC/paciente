@@ -13,6 +13,11 @@ const PacienteSchema = new mongoose.Schema(
         unique: true,
         trim: true
     },
+    telefono: { type: String, default: "" },
+    correo: { type: String, default: "" },
+
+
+
     edad: {
         type: Number,
         required: [true, 'La edad es obligatoria'],
