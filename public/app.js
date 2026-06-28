@@ -228,7 +228,7 @@ function setSelect(id, value) {
 
 function calcularEdad() {
     const fechaNac = new Date(document.getElementById('ing-fecha-nacimiento').value);
-    const hoy = new Date();
+    const hoy = new Date();  // ← esta está dentro de la función, no hay conflicto
 
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const mes = hoy.getMonth() - fechaNac.getMonth();
@@ -244,3 +244,20 @@ function cerrarSesion() {
     sessionStorage.removeItem('autenticado');
     window.location.replace('login.html');
 }
+
+// Limitar fechaRealizado a hoy como máximo
+const fechaHoy = new Date().toISOString().split('T')[0]; // ← renombrado
+
+[
+    'ing-dlco-realizado',
+    'ing-espirometria-realizado', 
+    'ing-ecocardio-realizado',
+    'ing-pase-qx-realizado',
+    'edit-dlco-realizado',
+    'edit-espirometria-realizado',
+    'edit-ecocardio-realizado',
+    'edit-pase-qx-realizado'
+].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('max', fechaHoy); // ← actualizado
+});
