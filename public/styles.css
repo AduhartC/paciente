@@ -13,9 +13,9 @@ body {
     display: flex; 
     justify-content: center; 
     align-items: center;
-    flex-wrap: wrap;   /* 🔥 CLAVE: permite salto de línea */
+    flex-wrap: wrap;
     gap: 8px;
-    padding: 20px 10px; 
+    padding: 20px 20px 20px 10px;  /* ← padding-right: 20px incluido */
     box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
     position: sticky; 
     top: 0; 
@@ -380,15 +380,10 @@ td {
     }
 }
 
-.navbar {
-    display: flex;
-    align-items: center;
-    padding-right: 20px;  /* ← esto da espacio al borde derecho */
-}
 
 .navbar-logo {
     margin-left: auto;
-    margin-right: 45px;  /* ← separa del borde */
+    margin-right: 20px;
     height: 45px;
     width: 45px;
     border-radius: 50%;
