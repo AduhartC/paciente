@@ -1,0 +1,26 @@
+<!-- login.html -->
+<div class="login-box">
+    <h2>🔐 Acceso al Sistema</h2>
+    <input type="password" id="clave" placeholder="Ingresa la clave">
+    <button onclick="verificar()">Entrar</button>
+    <p id="error" style="color:red; display:none">Clave incorrecta</p>
+</div>
+
+<script>
+function verificar() {
+    const clave = document.getElementById('clave').value;
+    
+    if (clave === "clinica2024") { // ← cambia esta clave
+        sessionStorage.setItem('autenticado', 'true');
+        window.location.href = 'index.html';
+    } else {
+        document.getElementById('error').style.display = 'block';
+    }
+}
+</script>
+<script>
+    // Proteger página
+    if (sessionStorage.getItem('autenticado') !== 'true') {
+        window.location.href = 'login.html';
+    }
+</script>

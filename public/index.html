@@ -8,6 +8,11 @@
 </head>
 <body>
 
+
+
+
+
+    
 <div class="navbar">
     <div class="navbar-links">
         <a href="index.html" class="tab-activa">Ingreso</a>
@@ -133,6 +138,12 @@
     <div id="ing-msg" class="msg-box"></div>
 
 </div>
+<script>
+    // Proteger página
+    if (sessionStorage.getItem('autenticado') !== 'true') {
+        window.location.href = 'login.html';
+    }
+</script>
 
 <script src="app.js"></script>
 </body>

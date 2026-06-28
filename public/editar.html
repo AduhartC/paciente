@@ -172,7 +172,12 @@
     </form>
 
 </div>
-
+<script>
+    // Proteger página
+    if (sessionStorage.getItem('autenticado') !== 'true') {
+        window.location.href = 'login.html';
+    }
+</script>
 <script src="editar.js?v=3"></script>
 </body>
 </html>

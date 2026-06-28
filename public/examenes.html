@@ -73,5 +73,12 @@ async function cargarExamenes() {
 
 cargarExamenes();
 </script>
+
+<script>
+    // Proteger página
+    if (sessionStorage.getItem('autenticado') !== 'true') {
+        window.location.href = 'login.html';
+    }
+</script>
 </body>
 </html>
