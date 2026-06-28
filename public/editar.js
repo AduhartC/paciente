@@ -30,7 +30,9 @@ function cargarPaciente(p) {
 
     document.getElementById("resultados").innerHTML = "";
 
-    setValue("edit-nombre", `${p.nombres} ${p.apellidos}`, true);
+    setValue("edit-nombres",   p.nombres   ?? "", true);  // bloqueado
+    setValue("edit-apellidos", p.apellidos ?? "", true);  // bloqueado
+
     setValue("edit-rut",    p.rut,    true);
 
     setValue("edit-edad",            p.edad            ?? "");
