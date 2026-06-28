@@ -9,7 +9,11 @@
 <script>
 function verificar() {
     const clave = document.getElementById('clave').value;
-    
-  
+    if (clave === "clinica2024") {
+        sessionStorage.setItem('autenticado', 'true');
+        window.location.replace('index.html');  // ← replace en vez de href
+    } else {
+        document.getElementById('error').style.display = 'block';
+    }
 }
 </script>
