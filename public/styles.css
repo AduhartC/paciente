@@ -383,12 +383,13 @@ td {
 .navbar {
     display: flex;
     align-items: center;
-    /* Los links al centro, el logo al extremo derecho */
+    padding: 8px 20px;  /* ← agrega padding horizontal */
 }
 
 .navbar-logo {
-    margin-left: auto;  /* ← empuja el logo a la derecha */
-    height: 40px;
-    width: auto;
-    border-radius: 50%; /* opcional, lo hace circular */
+    margin-left: auto;
+    height: 45px;       /* ← ajusta el tamaño */
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;  /* ← evita que se deforme */
 }
