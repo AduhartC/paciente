@@ -388,7 +388,7 @@ td {
 
 .navbar-logo {
     margin-left: auto;
-    margin-right: 15px;  /* ← separa del borde */
+    margin-right: 45px;  /* ← separa del borde */
     height: 45px;
     width: 45px;
     border-radius: 50%;
