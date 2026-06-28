@@ -383,7 +383,7 @@ td {
 .navbar {
     display: flex;
     align-items: center;
-    padding: 8px 20px;  /* ← agrega padding horizontal */
+    padding-right: 20px;  /* ← esto da espacio al borde derecho */
 }
 
 .navbar-logo {
