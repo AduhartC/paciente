@@ -399,3 +399,15 @@ td {
     flex: 1;
     justify-content: center;  /* links centrados */
 }
+
+@media (max-width: 600px) {
+    .examen-row {
+        grid-template-columns: 1fr;  /* ← 1 columna en móvil */
+        gap: 8px;
+    }
+    
+    .examen-row input,
+    .examen-row select {
+        width: 100%;
+    }
+}
