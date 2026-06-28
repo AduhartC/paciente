@@ -9,7 +9,8 @@ router.post('/', async (req, res) => {
     const {
       rut,
       ficha,
-      nombre,
+      nombres,
+      apellidos,
       telefono,
       correo,
       edad,
@@ -25,7 +26,7 @@ router.post('/', async (req, res) => {
       evaluaciones
     } = req.body;
 
-    if (!rut || !ficha || !nombre || !edad || !fechaNacimiento || !diagnostico) {
+    if (!rut || !ficha || !nombres || !apellidos || !edad || !fechaNacimiento || !diagnostico) {
       return res.status(400).json({
         message: "Faltan campos obligatorios"
       });
@@ -47,7 +48,8 @@ router.post('/', async (req, res) => {
     const nuevoPaciente = new Paciente({
       rut: cleanRut,
       ficha: cleanFicha,
-      nombre: String(nombre).trim(),
+      nombres:   String(nombres).trim(),
+      apellidos: String(apellidos).trim(),
       telefono: telefono || "",
       correo: correo || "",
       edad: Number(edad),
@@ -103,7 +105,8 @@ router.get('/buscar', async (req, res) => {
         const pacientes = await Paciente.find({
             $or: [
                 { rut: { $regex: buscar, $options: "i" } },
-                { nombre: { $regex: buscar, $options: "i" } }
+                { nombres:   { $regex: buscar, $options: "i" } },
+                { apellidos: { $regex: buscar, $options: "i" } },
             ]
         });
 
@@ -124,7 +127,8 @@ router.patch('/:id', async (req, res) => {
 
         // 🔒 proteger campos críticos
         delete req.body.rut;
-        delete req.body.nombre;
+        delete req.body.nombres;
+        delete req.body.apellidos;
 
         const actualizado = await Paciente.findByIdAndUpdate(
             id,
@@ -166,7 +170,7 @@ router.get('/examenes-pendientes', async (req, res) => {
 
             const dias = Math.floor((hoy - new Date(e.fechaSolicitud)) / 86400000);
             resultado.push({
-                paciente: p.nombre,
+                paciente:`${p.nombres} ${p.apellidos}`,
                 rut: p.rut,
                 examen,
                 fechaSolicitud: e.fechaSolicitud,

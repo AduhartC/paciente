@@ -13,7 +13,8 @@ document.getElementById('formIngreso')?.addEventListener('submit', async (e) => 
     const edadValue = document.getElementById('ing-edad')?.value;
 
     const pacienteData = {
-        nombre: document.getElementById('ing-nombre')?.value?.trim(),
+        nombres:   document.getElementById('ing-nombres')?.value?.trim(),
+        apellidos: document.getElementById('ing-apellidos')?.value?.trim(),
         rut: document.getElementById('ing-rut')?.value?.trim(),
         telefono: document.getElementById('ing-telefono')?.value?.trim() || "",
         correo:   document.getElementById('ing-correo')?.value?.trim() || "",
@@ -176,7 +177,8 @@ function cargarPaciente(p) {
     clearResultados();
 
     // Bloqueados
-    setValue("edit-nombre",  p.nombre, true);
+    setValue("edit-nombres",   p.nombres   ?? "");
+    setValue("edit-apellidos", p.apellidos ?? "");
     setValue("edit-rut",     p.rut,    true);
 
     // Editables simples

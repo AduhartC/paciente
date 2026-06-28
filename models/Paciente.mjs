@@ -2,11 +2,8 @@ import mongoose from 'mongoose';
 
 const PacienteSchema = new mongoose.Schema(
 {
-    nombre: {
-        type: String,
-        required: [true, 'El nombre del paciente es obligatorio'],
-        trim: true
-    },
+nombres:   { type: String, required: true, trim: true },
+apellidos: { type: String, required: true, trim: true },
     rut: {
         type: String,
         required: [true, 'El RUT es obligatorio'],

@@ -30,7 +30,7 @@ function cargarPaciente(p) {
 
     document.getElementById("resultados").innerHTML = "";
 
-    setValue("edit-nombre", p.nombre, true);
+    setValue("edit-nombre", `${p.nombres} ${p.apellidos}`, true);
     setValue("edit-rut",    p.rut,    true);
 
     setValue("edit-edad",            p.edad            ?? "");
@@ -170,7 +170,7 @@ function mostrarResultados(lista) {
     lista.forEach((p) => {
         const div  = document.createElement("div");
         const info = document.createElement("span");
-        info.innerHTML = `<b>${p.nombre}</b> — ${p.rut}`;
+        info.innerHTML = `<b>${`${p.nombres} ${p.apellidos}`}</b> — ${p.rut}`;
 
         const btn = document.createElement("button");
         btn.textContent = "Abrir";
