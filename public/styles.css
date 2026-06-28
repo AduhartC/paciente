@@ -411,3 +411,16 @@ td {
         width: 100%;
     }
 }
+
+.fila-fechas {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    grid-column: span 2;  /* ocupa todo el ancho del grid-form */
+}
+
+@media (max-width: 600px) {
+    .fila-fechas {
+        grid-template-columns: 1fr;
+    }
+}
