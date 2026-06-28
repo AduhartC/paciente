@@ -1,9 +1,96 @@
-<!-- login.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso al Sistema</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fa;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 5px solid #007a87;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            color: #004d51;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #00b2b2;
+            box-shadow: 0 0 0 3px rgba(0,178,178,0.1);
+        }
+
+        .btn-entrar {
+            width: 100%;
+            padding: 12px;
+            background-color: #b9dfa9;
+            color: #1e1e1e;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-entrar:hover {
+            background-color: #a3cc92;
+        }
+
+        #error {
+            color: #c53030;
+            margin-top: 10px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .logo-login {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
 <div class="login-box">
+    <img src="favicon.png" alt="Logo" class="logo-login">
     <h2>🔐 Acceso al Sistema</h2>
-    <input type="password" id="clave" placeholder="Ingresa la clave">
-    <button onclick="verificar()">Entrar</button>
-    <p id="error" style="color:red; display:none">Clave incorrecta</p>
+    <input type="password" id="clave" placeholder="Ingresa la clave"
+           onkeydown="if(event.key==='Enter') verificar()">
+    <button class="btn-entrar" onclick="verificar()">Entrar</button>
+    <p id="error">❌ Clave incorrecta</p>
 </div>
 
 <script>
@@ -11,9 +98,12 @@ function verificar() {
     const clave = document.getElementById('clave').value;
     if (clave === "clinica2024") {
         sessionStorage.setItem('autenticado', 'true');
-        window.location.replace('index.html');  // ← replace en vez de href
+        window.location.replace('index.html');
     } else {
         document.getElementById('error').style.display = 'block';
     }
 }
 </script>
+
+</body>
+</html>
