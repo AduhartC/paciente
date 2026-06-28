@@ -388,10 +388,11 @@ td {
 
 .navbar-logo {
     margin-left: auto;
-    height: 45px;       /* ← ajusta el tamaño */
+    margin-right: 15px;  /* ← separa del borde */
+    height: 45px;
     width: 45px;
     border-radius: 50%;
-    object-fit: cover;  /* ← evita que se deforme */
+    object-fit: cover;
 }
 .navbar a {
     display: flex;
