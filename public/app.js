@@ -239,3 +239,8 @@ function calcularEdad() {
 
     document.getElementById('ing-edad').value = edad;
 }
+
+function cerrarSesion() {
+    sessionStorage.removeItem('autenticado');
+    window.location.replace('login.html');
+}
