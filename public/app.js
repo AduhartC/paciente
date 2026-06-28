@@ -203,7 +203,7 @@ function cargarPaciente(p) {
 
     document.getElementById("formEditar").style.display = "block";
     document.getElementById('edit-fechaNacimiento').value = paciente.fechaNacimiento;
-calcularEdad(); // ← recalcula al cargar
+calcularEdadEditar(); // ← función separada para el form editar
 }
 
 // ─── Helpers de poblado ───────────────────────────────────────────────────────
@@ -224,4 +224,18 @@ function setSelect(id, value) {
     const el = document.getElementById(id);
     if (!el || !value) return;
     el.value = value;
+}
+
+function calcularEdad() {
+    const fechaNac = new Date(document.getElementById('ing-fecha-nacimiento').value);
+    const hoy = new Date();
+
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+        edad--;
+    }
+
+    document.getElementById('ing-edad').value = edad;
 }

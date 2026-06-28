@@ -201,3 +201,16 @@ function setSelect(id, value) {
     if (!el || !value) return;
     el.value = value;
 }
+function calcularEdadEditar() {
+    const fechaNac = new Date(document.getElementById('edit-fechaNacimiento').value);
+    const hoy = new Date();
+
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+        edad--;
+    }
+
+    document.getElementById('edit-edad').value = edad;
+}
