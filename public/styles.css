@@ -393,3 +393,7 @@ td {
     border-radius: 50%;
     object-fit: cover;  /* ← evita que se deforme */
 }
+.navbar a {
+    display: flex;
+    align-items: center;
+}
