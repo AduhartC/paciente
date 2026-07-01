@@ -254,8 +254,9 @@ function cerrarSesion() {
 }
 
 // Limitar fechaRealizado a hoy como máximo
+// Establecer fecha de hoy por defecto
 const fechaHoy = new Date().toISOString().split('T')[0]; // ← renombrado
-
+document.getElementById('ing-fecha-ingreso').value = fechaHoy;
 [
     'ing-dlco-realizado',
     'ing-espirometria-realizado', 
@@ -269,3 +270,8 @@ const fechaHoy = new Date().toISOString().split('T')[0]; // ← renombrado
     const el = document.getElementById(id);
     if (el) el.setAttribute('max', fechaHoy); // ← actualizado
 });
+
+
+// Establecer fecha de hoy por defecto
+const fechaHoy = new Date().toISOString().split('T')[0];
+document.getElementById('ing-fecha-ingreso').value = fechaHoy;
