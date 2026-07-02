@@ -11,11 +11,9 @@
     <a href="index.html">Ingreso</a>
     <a href="examenes.html" class="tab-activa">Exámenes</a>
     <a href="editar.html">Editar</a>
-    <!--    <a href="consulta.html">Consulta</a> -->
     <a href="eliminar.html">Eliminar</a>
     <button onclick="cerrarSesion()" class="btn-logout">🚪 Salir</button>
     <img src="favicon.png" alt="Logo" class="navbar-logo" style="margin-right: 20px;">
-    
 </div>
 
 <div class="container" style="display:block">
@@ -56,10 +54,9 @@ async function cargarExamenes() {
     resumen.innerHTML = `Total pendientes: <span style="color:#c53030">${atrasados} atrasados</span> / ${data.length} en seguimiento`;
 
     tbody.innerHTML = data
-    .sort((a, b) => b.dias - a.dias)  // ← más antiguo primero
+    .sort((a, b) => b.dias - a.dias)
     .map(e => `
-        
-            <tr class="${e.atrasado ? 'row-expired' : ''}">
+        <tr class="${e.atrasado ? 'row-expired' : ''}">
             <td>${e.paciente}</td>
             <td>${e.rut}</td>
             <td>${e.examen}</td>
@@ -74,23 +71,16 @@ async function cargarExamenes() {
 }
 
 cargarExamenes();
-</script>
 
-<script>
-    // Proteger página
-    if (sessionStorage.getItem('autenticado') !== 'true') {
-        window.location.href = 'login.html';
-    }
-</script>
-
-<script>
 if (sessionStorage.getItem('autenticado') !== 'true') {
     window.location.href = 'login.html';
 }
+
 function cerrarSesion() {
     sessionStorage.removeItem('autenticado');
     window.location.replace('login.html');
 }
 </script>
+
 </body>
 </html>
