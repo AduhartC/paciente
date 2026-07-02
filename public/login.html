@@ -87,11 +87,51 @@
 <div class="login-box">
     <img src="favicon.png" alt="Logo" class="logo-login">
     <h2>🔐 Acceso al Sistema</h2>
-    <input type="password" id="clave" placeholder="Ingresa la clave"
+    <input type="text" id="usuario" placeholder="Usuario">
+    <input type="password" id="clave" placeholder="Contraseña"
            onkeydown="if(event.key==='Enter') verificar()">
     <button class="btn-entrar" onclick="verificar()">Entrar</button>
-    <p id="error">❌ Clave incorrecta</p>
+    <p id="error">❌ Usuario o contraseña incorrectos</p>
 </div>
+
+
+<script>
+async function verificar() {
+    const usuario = document.getElementById('usuario').value;
+    const clave   = document.getElementById('clave').value;
+
+    const res  = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario, password: clave })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        sessionStorage.setItem('autenticado', 'true');
+        sessionStorage.setItem('usuario', data.usuario);
+        sessionStorage.setItem('rol', data.rol);
+        window.location.replace('index.html');
+    } else {
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').textContent = '❌ ' + data.message;
+    }
+}
+</script>
+6. Crea el primer usuario admin — después de hacer push, abre la consola del navegador en tu app y ejecuta una sola vez:
+
+javascript
+fetch('/api/auth/registro', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ usuario: 'admin', password: 'clinica2024', rol: 'admin' })
+}).then(r => r.json()).then(console.log)
+
+
+
+
+
 
 <script>
 function verificar() {
