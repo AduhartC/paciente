@@ -210,7 +210,7 @@ function cargarPaciente(p) {
     if (radio) radio.checked = true;
 
     document.getElementById("formEditar").style.display = "block";
-    document.getElementById('edit-fechaNacimiento').value = paciente.fechaNacimiento;
+   document.getElementById('edit-fechaNacimiento').value = p.fechaNacimiento;
 calcularEdadEditar(); // ← función separada para el form editar
 }
 
@@ -272,6 +272,3 @@ document.getElementById('ing-fecha-ingreso').value = fechaHoy;
 });
 
 
-// Establecer fecha de hoy por defecto
-const fechaHoy = new Date().toISOString().split('T')[0];
-document.getElementById('ing-fecha-ingreso').value = fechaHoy;
