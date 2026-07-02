@@ -13,6 +13,8 @@
     <a href="editar.html">Editar</a>
     <!--    <a href="consulta.html">Consulta</a> -->
     <a href="eliminar.html">Eliminar</a>
+    <button onclick="cerrarSesion()" class="btn-logout">🚪 Salir</button>
+    <img src="favicon.png" alt="Logo" class="navbar-logo" style="margin-right: 20px;">
     
 </div>
 
@@ -79,6 +81,16 @@ cargarExamenes();
     if (sessionStorage.getItem('autenticado') !== 'true') {
         window.location.href = 'login.html';
     }
+</script>
+
+<script>
+if (sessionStorage.getItem('autenticado') !== 'true') {
+    window.location.href = 'login.html';
+}
+function cerrarSesion() {
+    sessionStorage.removeItem('autenticado');
+    window.location.replace('login.html');
+}
 </script>
 </body>
 </html>
