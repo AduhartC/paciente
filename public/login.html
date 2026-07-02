@@ -118,20 +118,8 @@ async function verificar() {
         document.getElementById('error').textContent = '❌ ' + data.message;
     }
 }
+
 </script>
-6. Crea el primer usuario admin — después de hacer push, abre la consola del navegador en tu app y ejecuta una sola vez:
-
-javascript
-fetch('/api/auth/registro', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ usuario: 'admin', password: 'clinica2024', rol: 'admin' })
-}).then(r => r.json()).then(console.log)
-
-
-
-
-
 
 <script>
 function verificar() {
